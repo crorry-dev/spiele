@@ -2,9 +2,10 @@
 import random
 
 class Busfahren:
-    def __init__(self) -> None:  
+    def __init__(self, player_num) -> None:  
         self.used_cards_list = list()
         self.unused_cards_list = list()
+        self.player_num = player_num
         self.make_card_pool()
 
     def make_card_pool(self):
