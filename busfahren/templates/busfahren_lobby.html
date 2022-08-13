@@ -32,9 +32,7 @@
         {% endfor %}
     </table>
     {% if anz_players > 1 %}
-    <form method="POST">
-        <input type="submit" class="btn btn-outline-success btn-lg" value="Starten" />
-    </form>
+    <a class="btn btn-outline-success btn-lg" href="/busfahren_start">Starten</a>
     {% else %}
     <br>
     <h3>Es sind noch nicht genügend Spieler vorhanden um das Spiel zu starten!</h3>

@@ -4,30 +4,31 @@
 {% from "includes/_formhelpers.html" import render_field %}
 <center>
     <h1>Busfahren</h1>
-    <table>
-        {% for i in trigangle_cards %}
-            <div>
-                <p>
-                    {{ i }}    
-                </p>
-            </div>
-        {% endfor %}
-    </table>
-
+    <hr>
+    {% for card in json_busfahren["map"] %}    
+        <!-- KARTEN -->
+        <p>{{ card }}</p>
+    {% endfor %}
     <hr><hr>
     <h3>Meine Karten</h3>
-    <hr><hr>
-    <p>{{ player_cards }}</p>
-    {% for i in player_cards %}
-        <div>
-            <a>
-                <p>
-                    {{ i }}
-                </p>
-            </a>
-        </div>
+    <p>Zum Legen die entsprechende Karte drücken</p>
+    <br>
+
+    {% for card in json_busfahren[session["nickname"]] %}
+        <p>{{ card }}</p>
     {% endfor %}
 
+    <hr><hr>
+    {% if not session["busfahren_status"] %}
+    <form method="POST">
+        <center><input type="submit" class="btn btn-outline-success btn-lg" value="Bereit" /></center>
+    </form>
+    {% else %}
+    <h3>Du bist bereit!</h3>
+    {% endif %}
+
+
+    <!-- TESTING -->
     <div id="triangle_card" style="width:50px; height:75px; border-style:solid; border-radius:10px;">
         <div id="corner-left"></div>
         <div id="coner-bottom-right"></div>
