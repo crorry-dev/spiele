@@ -115,7 +115,7 @@ def forgot_password():
 @app.route('/busfahren_stop', methods=["GET", "POST"])
 def busfahren_stop():
 	json_busfahren = json_db.read("busfahren")
-	session = {}
+	session.clear()
 	json_busfahren = {}
 	json_db.write(json_busfahren, "busfahren")
 	return redirect(url_for("home"))
@@ -123,16 +123,21 @@ def busfahren_stop():
 @app.route('/busfahren_start', methods=["GET", "POST"])
 def busfahren_start():
 	json_busfahren = json_db.read("busfahren")
-	json_busfahren["round"] = 1
+	
 	session["busfahren_status"] = False
 
-	class_busfahren = busfahren.Busfahren(len(json_busfahren["players"]))
-	json_busfahren["map"] = class_busfahren.get_map()
+	if "round" not in json_busfahren:
+		json_busfahren["round"] = 1
+		class_busfahren = busfahren.Busfahren(len(json_busfahren["players"]))
+		json_busfahren["map"] = class_busfahren.get_map()
+		
+		for player in json_busfahren["players"]:
+			json_busfahren[player] =  class_busfahren.get_player_cards()
+			if "status" not in json_busfahren:
+				json_busfahren["status"] = {}
+			json_busfahren["status"][player] = False
+		json_db.write(json_busfahren, "busfahren")
 	
-	for player in json_busfahren["players"]:
-		json_busfahren[player] =  class_busfahren.get_player_cards()
-
-	json_db.write(json_busfahren, "busfahren")
 	return redirect(url_for("page_busfahren"))
 
 @app.route('/busfahren', methods=["GET", "POST"])
@@ -141,8 +146,15 @@ def page_busfahren():
 	json_data = json_db.read()
 	json_busfahren = json_db.read("busfahren")
 
+	if request.method == "POST":
+		
+		session["busfahren_status"] = True
+		json_busfahren["status"][session["nickname"]] = True
+		# if ready
 
-	return render_template("busfahren.html", form=form, josn_data=json_data, trigangle_cards=trigangle_cards, player_cards=player_cards)
+
+
+	return render_template("busfahren.html", form=form, josn_data=json_data, json_busfahren=json_busfahren)
 
 
 @app.route('/busfahren_lobby', methods=["GET", "POST"])

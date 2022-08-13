@@ -1,4 +1,4 @@
-{% extends 'includes/layout.html' %}
+{% extends 'includes/layout_busfahren.html' %}
 
 {% block body %}
 {% from "includes/_formhelpers.html" import render_field %}
@@ -15,6 +15,10 @@
     <br>
 
     {% for card in json_busfahren[session["nickname"]] %}
+    <form method="POST">
+        <center><input type="submit" class="btn btn-outline-success btn-lg" value="{{ card }}" /></center>
+    </form>
+
         <p>{{ card }}</p>
     {% endfor %}
 
@@ -27,6 +31,19 @@
     <h3>Du bist bereit!</h3>
     {% endif %}
 
+    <hr>
+    <table class="table table-stripped" style="width: 50%;">
+        <tr>
+            <th>Nickname</th>
+            <th>Status</th>
+        </tr>
+        {% for player in json_busfahren["status"] %}
+        <tr>
+            <td>{{ player }}</td>
+            <td>{{ json_busfahren["status"][player] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
     <!-- TESTING -->
     <div id="triangle_card" style="width:50px; height:75px; border-style:solid; border-radius:10px;">
