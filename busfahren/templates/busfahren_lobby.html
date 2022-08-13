@@ -15,14 +15,19 @@
         <br>
         <center><input type="submit" class="btn btn-outline-success btn-lg" value="Enter" /></center>
     </form>
+    {% else %}
+    <p>Du bist dabei mit dem Nicknamen: {{ session["nickname"]}}</p>
     {% endif %}
     <hr><hr>
-    <p>Es sind {{ anz_players }} in der Lobby </p>
+    <p>Es ist/sind {{ anz_players }} Spieler in der Lobby </p>
     {% if anz_players > 1 %}
     <form method="POST">
-        
         <center><input type="submit" class="btn btn-outline-success btn-lg" value="Starten" /></center>
     </form>
+    {% else %}
+    <h3>Es sind noch nicht genügend Spieler vorhanden um das Spiel zu starten!</h3>
+    <br>
+    <a class="btn btn-outline-success btn-lg" href="/busfahren_lobby">refresh</a>
     {% endif %}
 
 </center>
