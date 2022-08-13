@@ -2,9 +2,9 @@
 import json
 
 DEFAULT_DB_DATA = {}
-DBs = []
+DBs = ["db", "busfahren"]
 #pwd = "/home/pi/saufen2go/flask/"
-pwd = "/home/dieburg-digital/zeiterfassung/db/"
+pwd = "./db/"
 def write(data={}, filename="db"):
     with open(pwd+filename + ".json", 'w') as file:
         json.dump(data, file, indent=4)
