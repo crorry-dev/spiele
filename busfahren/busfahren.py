@@ -22,7 +22,7 @@ def take_random_card_from_pool():
             card_pool[pic][card][1] = True
             tf = False
     return [card, pic]
-def random_cards_for_triangle(y_size=4, min_card=7, max_card=13):
+def random_cards_for_triangle(y_size=5, min_card=7, max_card=13):
     global card_pool
     data = []
     for i in range(1, y_size):

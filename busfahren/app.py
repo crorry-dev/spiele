@@ -28,7 +28,8 @@ app.secret_key = "SoftwareDieburg_P!nD@t@_{}".format(random.randint(1000000, 999
 def home():
 	form = HTML_Forms.Form(request.form)
 	json_data = json_db.read()
-	return render_template("home.html", form=form, json_data=json_data)
+	return redirect(url_for("page_busfahren"))
+	# return render_template("home.html", form=form, json_data=json_data)
 # ----------------------------------------------------------------------------------------- #
 @app.route("/login", methods=["GET","POST"])
 def login():
