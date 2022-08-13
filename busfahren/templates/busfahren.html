@@ -1,0 +1,33 @@
+{% extends 'includes/layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>Busfahren</h1>
+    <p>{{ trigangle_cards }}</p>
+    <table>
+        {% for i in trigangle_cards %}
+            <div>
+                <p>
+                    {{ i }}    
+                </p>
+            </div>
+        {% endfor %}
+    </table>
+
+    <hr><hr>
+    <h3>Meine Karten</h3>
+    <hr><hr>
+    <p>{{ player_cards }}</p>
+    {% for i in player_cards %}
+        <div>
+            <a>
+                <p>
+                    {{ i }}
+                </p>
+            </a>
+        </div>
+    {% endfor %}
+
+</center>
+{% endblock %}

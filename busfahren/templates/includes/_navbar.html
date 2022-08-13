@@ -1,0 +1,48 @@
+
+<nav class="navbar navbar-expand-lg bg-light">
+  <a class="navbar-brand" href="/">Software-Dieburg</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/"> Home </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/me"> Über Mich </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/impressum"> Impressum und Datenschutz </a>
+      </li>
+      <!-- 
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown link
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+
+      -->
+      
+    </ul>
+    {% if "email" not in session %}
+    <a class="btn btn-outline-success my-2" href="/login">Login</a>
+    <span style="width: 5px;"></span>
+    <a class="btn btn-outline-danger my-2" href="/register">Registrieren</a>
+    <span style="width: 20px;"></span>
+    <a class="btn btn-outline-info me-2" href="/contact-page">Kontaktformular</a>
+    {% else %}
+    <a class="btn btn-outline-success me-2" href="/user-account">Konto</a>
+    <span style="width: 5px;"></span>
+    <a class="btn btn-outline-success me-2" href="/user-requests">Meine Anfragen</a>
+    <span style="width: 20px;"></span>
+    <a class="btn btn-outline-info me-2" href="/contact-page">Kontaktformular</a>
+    {% endif %}
+  </div>
+</nav>
