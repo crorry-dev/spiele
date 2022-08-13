@@ -1,0 +1,29 @@
+{% extends 'includes/layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>Busfahren Lobby</h1>
+    <hr>
+    {% if "nickname" in session %}
+    <h3></h3>
+    {% endif %}
+    <hr>
+    {% if "nickname" not in session %}
+    <form method="POST">
+        <div class="form-group" >{{render_field(form.busfahren_nickname, class="form-control")}}</div>
+        <br>
+        <center><input type="submit" class="btn btn-outline-success btn-lg" value="Enter" /></center>
+    </form>
+    {% endif %}
+    <hr><hr>
+    <p>Es sind {{ anz_players }} in der Lobby </p>
+    {% if anz_players > 1 %}
+    <form method="POST">
+        
+        <center><input type="submit" class="btn btn-outline-success btn-lg" value="Starten" /></center>
+    </form>
+    {% endif %}
+
+</center>
+{% endblock %}

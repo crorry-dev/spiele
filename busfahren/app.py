@@ -28,7 +28,7 @@ app.secret_key = "SoftwareDieburg_P!nD@t@_{}".format(random.randint(1000000, 999
 def home():
 	form = HTML_Forms.Form(request.form)
 	json_data = json_db.read()
-	return redirect(url_for("page_busfahren"))
+	return redirect(url_for("page_busfahren_lobby"))
 	# return render_template("home.html", form=form, json_data=json_data)
 # ----------------------------------------------------------------------------------------- #
 @app.route("/login", methods=["GET","POST"])
@@ -116,15 +116,37 @@ def forgot_password():
 def page_busfahren():
 	form = HTML_Forms.Form(request.form)
 	json_data = json_db.read()
-	# waiting for players? 
-	# busfahren.make_card_pool()
+
 	trigangle_cards = busfahren.random_cards_for_triangle()
-	print(trigangle_cards)
-	# for player
 	player_cards = busfahren.random_cards_for_player()
-	print(player_cards)
+
 	return render_template("busfahren.html", form=form, josn_data=json_data, trigangle_cards=trigangle_cards, player_cards=player_cards)
 
+
+@app.route('/busfahren_lobby', methods=["GET", "POST"])
+def page_busfahren_lobby():
+	form = HTML_Forms.Form(request.form)
+	json_data = json_db.read()
+	json_busfahren = json_db.read("busfahren")
+	
+	if "players" in json_busfahren:
+		anz_players = len(json_busfahren["players"])
+	else:
+		anz_players = 0
+
+	if request.method == "POST":
+		if "nickname" not in session:
+			nickname = form.busfahren_nickname.data
+			if nickname != "":
+				session["nickname"] = nickname
+				if "players" not in json_busfahren:
+					json_busfahren["players"] = []
+				json_busfahren["players"].append(nickname)
+
+				json_db.write(json_busfahren, "busfahren")
+		return redirect(url_for("page_busfahren_lobby"))
+
+	return render_template("/busfahren_lobby.html", form=form, josn_data=json_data, anz_players=anz_players)
 
 
 
