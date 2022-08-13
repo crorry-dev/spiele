@@ -3,9 +3,11 @@
 try:
 	from flask import Flask, render_template, flash, redirect, url_for, request, session, logging , send_from_directory, send_file
 	import random, datetime
-	import json_db, HTML_Forms, app_functions, py_send_mail
+	import json_db, HTML_Forms, app_functions
 	import busfahren
 except Exception as e:
+	with open("log.log", 'w') as file:
+		file.write(str(e))
 	print("[x] Error import: {}".format(e))
 
 # ----------------------------------------------------------------------------------------- #
@@ -110,14 +112,16 @@ def forgot_password():
 # ----------------------------------------------------------------------------------------- #
 
 @app.route('/busfahren', methods=["GET", "POST"])
-def busfahren():
+def page_busfahren():
 	form = HTML_Forms.Form(request.form)
 	json_data = json_db.read()
 	# waiting for players? 
 	# busfahren.make_card_pool()
 	trigangle_cards = busfahren.random_cards_for_triangle()
+	print(trigangle_cards)
 	# for player
 	player_cards = busfahren.random_cards_for_player()
+	print(player_cards)
 	return render_template("busfahren.html", form=form, josn_data=json_data, trigangle_cards=trigangle_cards, player_cards=player_cards)
 
 
@@ -134,4 +138,4 @@ def busfahren():
 if __name__ == "__main__":
 	#ipAddress = socket.gethostbyname(socket.gethostname())
 	ipAddress = "0.0.0.0"
-	app.run(host=ipAddress, port=5050, debug=True)
+	app.run(host=ipAddress, port=5555, debug=True)

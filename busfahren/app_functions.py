@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-from flask import request
+from flask import Flask, request
 from uuid import getnode as get_mac
 import random, string, hashlib, os, datetime
 
