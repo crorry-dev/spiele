@@ -28,7 +28,7 @@ app.secret_key = "SoftwareDieburg_P!nD@t@_{}".format(random.randint(1000000, 999
 def home():
 	form = HTML_Forms.Form(request.form)
 	json_data = json_db.read()
-	
+
 	return render_template("home.html", form=form, json_data=json_data)
 # ----------------------------------------------------------------------------------------- #
 @app.route("/login", methods=["GET","POST"])
@@ -137,16 +137,18 @@ def page_busfahren_lobby():
 	if request.method == "POST":
 		if "nickname" not in session:
 			nickname = form.busfahren_nickname.data
-			if nickname != "":
+			if nickname != "" and nickname not in json_busfahren["players"]:
 				session["nickname"] = nickname
 				if "players" not in json_busfahren:
 					json_busfahren["players"] = []
 				json_busfahren["players"].append(nickname)
 
 				json_db.write(json_busfahren, "busfahren")
+			else:
+				flash("Dieser Nickname ist bereits vergeben oder der Name ist ungültig", "danger")
 		return redirect(url_for("page_busfahren_lobby"))
 
-	return render_template("/busfahren_lobby.html", form=form, josn_data=json_data, anz_players=anz_players)
+	return render_template("/busfahren_lobby.html", form=form, josn_data=json_data, anz_players=anz_players, json_busfahren=json_busfahren)
 
 
 
