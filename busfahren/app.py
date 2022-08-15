@@ -2,7 +2,7 @@
 
 try:
 	from flask import Flask, render_template, flash, redirect, url_for, request, session, logging , send_from_directory, send_file
-	import random, datetime
+	import random, datetime, re
 	import json_db, HTML_Forms, app_functions
 	import busfahren
 except Exception as e:
@@ -147,15 +147,50 @@ def page_busfahren():
 	json_busfahren = json_db.read("busfahren")
 
 	if request.method == "POST":
-		
 		session["busfahren_status"] = True
 		json_busfahren["status"][session["nickname"]] = True
-		# if ready
 
+	check_var = len(json_busfahren["players"])
+	for p in range(0, len(json_busfahren["players"])):
+		if json_busfahren["status"][json_busfahren["players"][p]]:
+			print(json_busfahren["status"][json_busfahren["players"][p]])
+			check_var -= 1
+	if check_var == 0:
+		json_busfahren["round"] += 1
+		for p in range(0, len(json_busfahren["players"])):
+			json_busfahren["status"][json_busfahren["players"][p]] = False
 
+	json_db.write(json_busfahren, "busfahren")
+	return render_template("busfahren.html", form=form, josn_data=json_data, json_busfahren=json_busfahren, check_var=check_var)
 
-	return render_template("busfahren.html", form=form, josn_data=json_data, json_busfahren=json_busfahren)
+@app.route('/card/<card>/<string:player>', methods=["GET", "POST"])
+def card(card, player):
+	json_busfahren = json_db.read("busfahren")
+	if "cards-used" not in json_busfahren:
+		json_busfahren["cards-used"] = {}
+	if player not in json_busfahren["cards-used"]:
+		json_busfahren["cards-used"][player] = []
+	
+	list_card = [int(re.findall(r'\d+', card)[0]), str(re.findall(r'[A-Z]', card)[0])]
+	round_cards = []
 
+	for l in json_busfahren["map"][json_busfahren["round"]-1]:
+		round_cards.append(l[0])
+
+	if list_card in json_busfahren[player] and list_card[0] in round_cards:
+		json_busfahren[player].remove(list_card)
+		json_busfahren["cards-used"][player].append(list_card)
+
+		if "timeline" not in json_busfahren:
+			json_busfahren["timeline"] = []
+		
+		json_busfahren["timeline"].append([session["nickname"], list_card[0], json_busfahren["round"]])
+
+		json_db.write(json_busfahren, "busfahren")
+		flash("Die Karte wurde gelegt, teile jetzt mündlich mit wer die Schlücke trinken soll!", "success")
+	else:
+		flash("Diese Karte kann in dieser Runde nicht gelegt werden!", "danger")
+	return redirect(url_for("page_busfahren"))
 
 @app.route('/busfahren_lobby', methods=["GET", "POST"])
 def page_busfahren_lobby():
@@ -170,7 +205,7 @@ def page_busfahren_lobby():
 
 	if request.method == "POST":
 		if "nickname" not in session:
-			nickname = form.busfahren_nickname.data
+			nickname = form.busfahren_nickname.data.split()[0]
 			if "players" not in json_busfahren:
 				json_busfahren["players"] = []
 			if nickname != "" and nickname not in json_busfahren["players"]:
@@ -197,4 +232,4 @@ def page_busfahren_lobby():
 if __name__ == "__main__":
 	#ipAddress = socket.gethostbyname(socket.gethostname())
 	ipAddress = "0.0.0.0"
-	app.run(host=ipAddress, port=5555, debug=True)
+	app.run(host=ipAddress, port=5050, debug=True)
