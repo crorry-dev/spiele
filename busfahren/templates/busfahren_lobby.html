@@ -5,39 +5,41 @@
 <center>
     <h1>Busfahren Lobby</h1>
     <hr>
-    {% if "nickname" in session %}
-    <h3></h3>
-    {% endif %}
     <hr>
-    {% if "nickname" not in session %}
-    <form method="POST">
-        <div class="form-group" >{{render_field(form.busfahren_nickname, class="form-control")}}</div>
+    {% if "round" in json_busfahren %}
+        <h3>Ein Spiel wird momentan gespielt. Aktuell befinden sich die Spieler in Runde {{ json_busfahren["round"] }}. Bitte warte bis das aktuelle Spiel zuende ist.</h3>
+        <a class="btn btn-outline-success btn-lg" href="/busfahren_lobby">refresh</a>
+    {% else %}
+        {% if "nickname" not in session %}
+        <form method="POST">
+            <div class="form-group" >{{render_field(form.busfahren_nickname, class="form-control")}}</div>
+            <br>
+            <center><input type="submit" class="btn btn-outline-success btn-lg" value="Enter" /></center>
+        </form>
+        {% else %}
+        <p>Du bist dabei mit dem Nicknamen: {{ session["nickname"]}}</p>
+        {% endif %}
+
+        <hr><hr>
+
+        <p>Es ist/sind {{ anz_players }} Spieler in der Lobby </p>
+        <h3>Diese Spieler sind schon dabei</h3>
+        <table class="table table-stripped" style="width: 50%;">
+            <tr><th></th></tr>
+            {% for player in json_busfahren["players"] %}
+            <tr>
+                <td style="text-align: center;vertical-align: middle;">{{ player }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if anz_players > 1 %}
+        <a class="btn btn-outline-success btn-lg" href="/busfahren_start">Starten</a>
+        {% else %}
         <br>
-        <center><input type="submit" class="btn btn-outline-success btn-lg" value="Enter" /></center>
-    </form>
-    {% else %}
-    <p>Du bist dabei mit dem Nicknamen: {{ session["nickname"]}}</p>
-    {% endif %}
-    
-    <hr><hr>
-    
-    <p>Es ist/sind {{ anz_players }} Spieler in der Lobby </p>
-    <h3>Diese Spieler sind schon dabei</h3>
-    <table class="table table-stripped" style="width: 50%;">
-        <tr><th></th></tr>
-        {% for player in json_busfahren["players"] %}
-        <tr>
-            <td style="text-align: center;vertical-align: middle;">{{ player }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% if anz_players > 1 %}
-    <a class="btn btn-outline-success btn-lg" href="/busfahren_start">Starten</a>
-    {% else %}
-    <br>
-    <h3>Es sind noch nicht genügend Spieler vorhanden um das Spiel zu starten!</h3>
-    <br>
-    <a class="btn btn-outline-success btn-lg" href="/busfahren_lobby">refresh</a>
+        <h3>Es sind noch nicht genügend Spieler vorhanden um das Spiel zu starten!</h3>
+        <br>
+        <a class="btn btn-outline-success btn-lg" href="/busfahren_lobby">refresh</a>
+        {% endif %}
     {% endif %}
 
 </center>
