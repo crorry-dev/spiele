@@ -6,6 +6,8 @@ class Busfahren:
         self.used_cards_list = list()
         self.unused_cards_list = list()
         self.player_num = player_num
+        self.final_round = 1
+        self.final_last_card = None
         self.make_card_pool()
 
     def make_card_pool(self):
@@ -40,6 +42,44 @@ class Busfahren:
         for _ in range(player_cards_num):
             player_cards_list.append(self.get_unused_card())
         return player_cards_list
+    
+    def play_final(self, guess, init=False):
+        # Params:
+        # guess can be "lower", "higher" or "equal"
+        # Return:
+        # case right guess, game not finished: {card=[[7, "H"], [9, "H"]], sips=0, won=False, opened_card=[11, "D"]}
+        # case wrong guess:                    {card=[8, "D"],             sips=2, won=False, opened_card=[12, "D"]}
+        # case right guess, game finished:     {card=None,                 sips=0, won=True,  opened_card=[13, "D"]}
+        if init:
+            self.make_card_pool()
+            self.final_last_card = self.get_unused_card()
+            self.final_round = 1
+            return({"card": self.final_last_card, "sips": 0, "won": False, "opened_card": None})
+        else:
+            playing_card = self.get_unused_card()
+            if self.final_last_card is None:
+                raise BaseException("Wrong use of function")
+            if (guess == "lower"  and playing_card[0] < self.final_last_card[0]) or \
+               (guess == "higher" and playing_card[0] > self.final_last_card[0]) or \
+               (guess == "equal"  and playing_card[0] == self.final_last_card[0]):
+                    self.final_round += 1
+                    if self.final_round == 5:
+                        return {"card": None, "sips": 0, "won": True, "opened_card": None}
+                    else:
+                        return {"card": playing_card, "sips": 0, "won": False, "opened_card": None}
+            else:
+                sips = self.final_round
+                next_card = self.get_unused_card()
+
+                ret_dict = {"card": next_card, "sips": sips, "won": False, "opened_card": playing_card}
+
+                self.final_last_card = next_card
+                self.final_round = 1
+
+                return ret_dict
+
+
+
 
 # def make_test_game():
 #     game = Busfahren()
@@ -51,3 +91,6 @@ class Busfahren:
 #     print(game.get_player_cards())
 
 # make_test_game()
+# (0,0) [0][0]
+# (1,0), (1,1) [1][0] [1][1]
+# (2,0), (2,1), (2,2)
