@@ -6,7 +6,7 @@
     <h1>Busfahren Lobby</h1>
     <hr>
     <hr>
-    {% if "round" in json_busfahren %}
+    {% if "round" in json_busfahren and session["nickname"] not in json_busfahren["players"] %}
         <h3>Ein Spiel wird momentan gespielt. Aktuell befinden sich die Spieler in Runde {{ json_busfahren["round"] }}. Bitte warte bis das aktuelle Spiel zuende ist.</h3>
         <a class="btn btn-outline-success btn-lg" href="/busfahren_lobby">refresh</a>
     {% else %}
