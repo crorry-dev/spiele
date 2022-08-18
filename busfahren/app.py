@@ -169,9 +169,19 @@ def page_busfahren():
 		for p in range(0, len(json_busfahren["players"])):
 			json_busfahren["status"][json_busfahren["players"][p]] = False
 
-	if json_busfahren["round"] = json_busfahren["max-round"]:
-		flash("Das Spiel ist vorbei! {} muss Busfahren".format("LOOSER"), "success")
-		return redirect(url_for("page_busfahren_final"))
+	if json_busfahren["round"] > json_busfahren["max-round"]:
+		anz_cards = []
+		for p in json_busfahren["players"]:
+			anz_cards.append([p, len(json_busfahren[p])])
+		
+		anz_player_cards = app_functions.sortListInList(anz_cards, 1)
+		# wenn die Letzten gleich sind = random
+		looser = anz_cards[-1][0]
+		
+		json_busfahren["final-looser"] = looser
+		json_db.write(json_busfahren, "busfahren")
+		flash("Das Spiel ist vorbei! {} muss Busfahren".format(looser), "success")
+		return redirect(url_for("page_busfahren_final", _guess="None"))
 
 	json_db.write(json_busfahren, "busfahren")
 	return render_template("busfahren.html", form=form, josn_data=json_data, json_busfahren=json_busfahren, check_var=check_var)
@@ -185,7 +195,7 @@ def card(card):
 		json_busfahren["cards-used"] = {}
 	if session["nickname"] not in json_busfahren["cards-used"]:
 		json_busfahren["cards-used"][session["nickname"]] = []
-
+	
 	card_index = 0
 	row_index = 0
 	round_index = 0
@@ -202,6 +212,9 @@ def card(card):
 		break
 	
 	if json_busfahren[session["nickname"]][int(card)][0] == json_busfahren["map"][row_index-1][card_index-1][0]:
+		if "timeline" not in json_busfahren:
+			json_busfahren["timeline"] = []
+		json_busfahren["timeline"].append([session["nickname"], json_busfahren[session["nickname"]][int(card)][0], json_busfahren["round"]])
 		json_busfahren["cards-used"][session["nickname"]].append(json_busfahren[session["nickname"]][int(card)])
 		del json_busfahren[session["nickname"]][int(card)]
 		json_db.write(json_busfahren, "busfahren")
@@ -239,15 +252,30 @@ def page_busfahren_lobby():
 
 # ----------------------------------------------------------------------------------------- #
 
-@app.route('/busfahren_final', methods=["GET", "POST"])
-def page_busfahren_final():
+@app.route('/busfahren_final/<string:_guess>', methods=["GET", "POST"])
+def page_busfahren_final(_guess):
 	form = HTML_Forms.Form(request.form)
 	json_busfahren = json_db.read("busfahren")
 
-	if "final" not in json_busfahren:
-		json_busfahren["final"] = {}
+	if "final-timeline" not in json_busfahren:
+		json_busfahren["final-timeline"] = []
 
-	return render_template("busfahren_final.html", form=form, json_busfahren=json_busfahren)
+	if "final-cards" not in json_busfahren:
+		class_busfahren = busfahren.Busfahren(len(json_busfahren["players"]))
+		json_busfahren["final-cards"] = class_busfahren.play_final(init=True)
+		json_busfahren["final-card-index"] = 0
+		json_db.write(json_busfahren, "busfahren")
+		return render_template("busfahren_final.html", json_busfahren=json_busfahren)
+
+	if _guess != None and _guess != "" and _guess != "None":
+		data = class_busfahren.play_final(guess=_guess, cards=json_busfahren["final-cards"])
+		if data[0] != 0:
+			json_busfahren["final-card-index"] += 1
+		else:
+			json_busfahren["final-cards"] = data[1]
+	json_db.write(json_busfahren, "busfahren")
+
+	return render_template("busfahren_final.html", json_busfahren=json_busfahren)
 
 # ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #

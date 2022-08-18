@@ -9,47 +9,43 @@
     <hr>
     
     <div id="container-cards" style="width: 100%; padding: 20px; border: 3px solid #fff; text-align: center;">
-        <!-- Offene Karte-->
-        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
-            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">H</div>
-            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">H</div>
-            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">7</div>
-        </div>
-        <!-- Karte zu -->
-        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
-            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
-            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
-            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
-        </div>
-
-        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
-            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
-            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
-            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
-        </div>
-
-        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
-            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
-            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
-            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
-        </div>
-
-        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
-            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
-            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
-            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
-        </div>
-
-        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
-            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
-            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
-            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
-        </div>
+        
+        {% for card in json_busfahren["final-cards"] %}
+            {% if loop.index-1 <= json_busfahren["final-card-index"] %}
+            <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+                <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">{{ json_busfahren["final-cards"][json_busfahren["final-card-index"]][1] }}</div>
+                <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">{{ json_busfahren["final-cards"][json_busfahren["final-card-index"]][1] }}</div>
+                <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">{{ json_busfahren["final-cards"][json_busfahren["final-card-index"]][0] }}</div>
+            </div>
+            {% else %}
+            <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+                <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
+                <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
+                <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
+            </div>
+            {% endif %}
+        {% endfor %}
     </div>
 
-    <a class="btn btn-outline-success btn-lg" href="">+</a>
-    <a class="btn btn-outline-success btn-lg" href="">-</a>
-    <a class="btn btn-outline-success btn-lg" href="">=</a>
+    {% if session["nickname"] == json_busfahren["final-looser"] %}
+    <a class="btn btn-outline-success btn-lg" href="/busfahren_final/higher">+</a>
+    <a class="btn btn-outline-success btn-lg" href="/busfahren_final/lower">-</a>
+    <a class="btn btn-outline-success btn-lg" href="/busfahren_final/equal">=</a>
+    {% else %}
+    <a class="btn btn-outline-info btn-lg" href="/busfahren_final/None"
+    {% endif %}
 
+    <hr>
+    <table class="table table-stripped" style="width: 50%;">
+        <tr>
+            <th>Nickname</th>
+            <th>Getrunkene Schlücke</th>
+        </tr>
+    {% for timeline in json_busfahren["final-timeline"] %}
+        <tr>
+            <td> {{ timeline[0] }} </td>
+            <td> {{ timeline[1] }}</td>
+        </tr>
+    {% endfor %}
 </center>
 {% endblock %}

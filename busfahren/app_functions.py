@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 from flask import Flask, request
 from uuid import getnode as get_mac
-import random, string, hashlib, os, datetime
+import random, string, hashlib, os, datetime, operator
 
 
 def getClientInfo():
@@ -27,3 +27,16 @@ def generateRandomPassword(length=8):
 def string2datetime(d, t):
 	return datetime.datetime.strptime(str(d) + str(t), "%Y-%m-%d %H:%M:%S")
 
+
+
+def bubbleSort(array):
+  for i in range(len(array)):
+    for j in range(0, len(array) - i - 1):
+      if array[j] > array[j + 1]:
+        temp = array[j]
+        array[j] = array[j+1]
+        array[j+1] = temp
+
+
+def sortListInList(_list, sort_by_value=0):
+	return sorted(_list, key=operator.itemgetter(sort_by_value))
