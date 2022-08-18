@@ -12,6 +12,7 @@
     {% else %}
         {% if "nickname" not in session %}
         <form method="POST">
+            <p>Dein Nickname darf nur zusammengeschrieben sein!</p>
             <div class="form-group" >{{render_field(form.busfahren_nickname, class="form-control")}}</div>
             <br>
             <center><input type="submit" class="btn btn-outline-success btn-lg" value="Enter" /></center>

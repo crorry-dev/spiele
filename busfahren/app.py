@@ -155,6 +155,9 @@ def page_busfahren():
 	json_data = json_db.read()
 	json_busfahren = json_db.read("busfahren")
 
+	if "nickname" not in session:
+		return redirect(url_for("busfahren_stop"))
+
 	if request.method == "POST":
 		session["busfahren_status"] = True
 		json_busfahren["status"][session["nickname"]] = True
@@ -180,7 +183,11 @@ def page_busfahren():
 		
 		json_busfahren["final-looser"] = looser
 		json_db.write(json_busfahren, "busfahren")
-		flash("Das Spiel ist vorbei! {} muss Busfahren".format(looser), "success")
+
+		if session["nickname"] != looser:
+			flash("Das Spiel ist vorbei! {} musst Busfahren".format(looser), "success")
+		else:
+			flash("Das Spiel ist vorbei! DU musst Busfahren... Viel Erfolg ;) ", "danger")
 		return redirect(url_for("page_busfahren_final", _guess="None"))
 
 	json_db.write(json_busfahren, "busfahren")
@@ -259,6 +266,8 @@ def page_busfahren_final(_guess):
 
 	if "final-timeline" not in json_busfahren:
 		json_busfahren["final-timeline"] = []
+	if "final-sips-added" not in json_busfahren:
+		json_busfahren["final-sips-added"] = 0
 
 	if "final-cards" not in json_busfahren:
 		class_busfahren = busfahren.Busfahren(len(json_busfahren["players"]))
@@ -272,7 +281,10 @@ def page_busfahren_final(_guess):
 		if data[0] != 0:
 			json_busfahren["final-card-index"] += 1
 		else:
+			json_busfahren["final-sips-added"] += json_busfahren["final-card-index"] + 1
 			json_busfahren["final-cards"] = data[1]
+			json_busfahren["final-cards"] = data[1]
+
 	json_db.write(json_busfahren, "busfahren")
 
 	return render_template("busfahren_final.html", json_busfahren=json_busfahren)

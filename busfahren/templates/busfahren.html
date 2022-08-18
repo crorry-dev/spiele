@@ -25,13 +25,15 @@
             {% elif c[1] == "C" %}
                 <div id="corner-left" style="font-size: 8px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/C.png" alt="C" width="10" height="10"></div>
                 <div id="coner-bottom-right" style="font-size: 8px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/C.png" alt="C" width="10" height="10"></div>
-            
             {% else %}
                 <div id="corner-left" style="font-size: 8px; position:absolute; top:5px; left: 5px;;"> ? </div>
                 <div id="coner-bottom-right" style="font-size: 8px; position:absolute; bottom:5px; right:5px;"> ? </div>
             {% endif %}
             
-            {% if c[0] == 11 %}
+
+            {% if c[0] < 10 %}
+            <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 15px;">{{ c[0] }}</div>
+            {% elif c[0] == 11 %}
                 <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> B </div>
             {% elif c[0] == 12 %}
                 <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> D </div>
@@ -40,7 +42,7 @@
             {% elif c[0] == 14 %}
                 <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> A </div>
             {% else %}
-            <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> {{ c[0] }} </div>
+                <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> {{ c[0] }} </div>
             {% endif %}
         </div>
 
@@ -81,7 +83,9 @@
             {% endif %}
             
             
-            {% if card[0] == 11 %}
+            {% if card[0] < 10 %}
+            <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 35px;"> {{ card[0] }} </div>
+            {% elif card[0] == 11 %}
                 <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 35px;"> B </div>
             {% elif card[0] == 12 %}
                 <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 35px;"> D </div>
