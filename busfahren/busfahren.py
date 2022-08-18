@@ -62,24 +62,24 @@ class Busfahren:
                 if cards[self.card_index][0] < cards[self.card_index+1][0]:
                     self.card_index += 1
                 else:
-                    for _ in range(0, self.card_index):
-                        cards[self.card_index] = self.get_unused_card()
+                    for i in range(1, self.card_index+1):
+                        cards[i] = self.get_unused_card()
                     self.card_index = 0
                 return self.card_index, cards
             elif guess == "lower":
                 if cards[self.card_index][0] > cards[self.card_index+1][0]:
                     self.card_index += 1
                 else:
-                    for _ in range(0, self.card_index):
-                        cards[self.card_index] = self.get_unused_card()
+                    for i in range(1, self.card_index+1):
+                        cards[i] = self.get_unused_card()
                     self.card_index = 0
                 return self.card_index, cards
             elif guess == "equal":
                 if cards[self.card_index][0] == cards[self.card_index+1][0]:
                     self.card_index += 1
                 else:
-                    for _ in range(0, self.card_index):
-                        cards[self.card_index] = self.get_unused_card()
+                    for i in range(1, self.card_index+1):
+                        cards[i] = self.get_unused_card()
                     self.card_index = 0
                 return self.card_index, cards
 

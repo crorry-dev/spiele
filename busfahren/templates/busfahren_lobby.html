@@ -1,4 +1,8 @@
-{% extends 'includes/layout.html' %}
+{% if "nickname" not in session %}
+    {% extends 'includes/layout.html' %}
+{% else %}
+    {% extends 'includes/layout_busfahren.html' %}
+{% endif %}
 
 {% block body %}
 {% from "includes/_formhelpers.html" import render_field %}

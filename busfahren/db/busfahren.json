@@ -1,147 +1,184 @@
 {
     "players": [
-        "Tobias",
-        "Ja"
+        "tc",
+        "iPhoneTC",
+        "js"
     ],
     "round": 11,
     "map": [
         [
             [
-                9,
-                "H"
+                7,
+                "C"
             ]
         ],
         [
             [
-                14,
-                "C"
+                10,
+                "H"
             ],
             [
                 11,
+                "S"
+            ]
+        ],
+        [
+            [
+                13,
+                "H"
+            ],
+            [
+                14,
+                "S"
+            ],
+            [
+                9,
                 "D"
             ]
         ],
         [
             [
-                10,
+                8,
                 "S"
             ],
             [
-                7,
+                13,
                 "S"
+            ],
+            [
+                8,
+                "D"
             ],
             [
                 12,
-                "S"
+                "D"
             ]
-        ],
+        ]
+    ],
+    "max-round": 10,
+    "tc": [
         [
+            12,
+            "C"
+        ]
+    ],
+    "status": {
+        "tc": false,
+        "iPhoneTC": false,
+        "js": false
+    },
+    "iPhoneTC": [],
+    "js": [],
+    "cards-used": {
+        "iPhoneTC": [
             [
-                10,
+                7,
                 "H"
             ],
             [
-                7,
-                "C"
+                11,
+                "H"
             ],
+            [
+                13,
+                "C"
+            ]
+        ],
+        "js": [
+            [
+                10,
+                "S"
+            ],
+            [
+                14,
+                "D"
+            ],
+            [
+                14,
+                "H"
+            ]
+        ],
+        "tc": [
             [
                 13,
                 "D"
             ],
             [
                 8,
-                "D"
-            ]
-        ]
-    ],
-    "max-round": 10,
-    "Tobias": [],
-    "status": {
-        "Tobias": false,
-        "Ja": false
-    },
-    "Ja": [
-        [
-            8,
-            "C"
-        ],
-        [
-            9,
-            "S"
-        ]
-    ],
-    "cards-used": {
-        "Ja": [
-            [
-                9,
-                "D"
-            ]
-        ],
-        "Tobias": [
-            [
-                7,
-                "H"
-            ],
-            [
-                12,
-                "C"
-            ],
-            [
-                13,
                 "H"
             ]
         ]
     },
     "timeline": [
         [
-            "Ja",
-            9,
+            "iPhoneTC",
+            7,
             1
         ],
         [
-            "Tobias",
-            7,
+            "js",
+            10,
+            2
+        ],
+        [
+            "iPhoneTC",
+            11,
+            3
+        ],
+        [
+            "tc",
+            13,
+            4
+        ],
+        [
+            "iPhoneTC",
+            13,
+            4
+        ],
+        [
+            "js",
+            14,
             5
         ],
         [
-            "Tobias",
-            12,
-            6
+            "js",
+            14,
+            5
         ],
         [
-            "Tobias",
-            13,
-            9
+            "tc",
+            8,
+            7
         ]
     ],
-    "final-looser": "Ja",
+    "final-looser": "js",
     "final-timeline": [],
-    "final-sips-added": 0,
+    "final-sips-added": 10,
     "final-cards": [
         [
             10,
             "D"
         ],
         [
-            14,
+            9,
             "H"
         ],
         [
-            10,
+            12,
             "C"
         ],
         [
-            14,
+            11,
             "S"
         ],
         [
-            8,
-            "C"
+            14,
+            "D"
         ],
         [
-            9,
-            "D"
+            14,
+            "H"
         ]
     ],
-    "final-card-index": 0
+    "final-card-index": 5
 }

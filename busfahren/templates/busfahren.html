@@ -102,14 +102,15 @@
     </div>
 
     <hr><hr>
-    {% if not json_busfahren["status"][session["nickname"]] %}
-    <form method="POST">
-        <center><input type="submit" class="btn btn-outline-success btn-lg" value="Bereit" /></center>
-    
-    </form>
+    {% if json_busfahren["status"][session["nickname"]]|length == 0 %}
+        <h3>Du hast keine Karten mehr, daher bist du automatisch bereit!</h3>
+    {% elif not json_busfahren["status"][session["nickname"]] %}
+        <form method="POST">
+            <center><input type="submit" class="btn btn-outline-success btn-lg" value="Bereit" /></center>
+        </form>
     {% else %}
-    <h3>Du bist bereit!</h3>
-    <a class="btn btn-outline-info btn-lg" href="/busfahren">refresh</a>
+        <h3>Du bist bereit!</h3>
+        <a class="btn btn-outline-info btn-lg" href="/busfahren">refresh</a>
     {% endif %}
     <hr>
     <table class="table table-stripped" style="width: 50%;">

@@ -238,6 +238,8 @@ def page_busfahren_lobby():
 	
 	if "players" in json_busfahren:
 		anz_players = len(json_busfahren["players"])
+	elif "nickname" in session and "round" in json_busfahren:
+		return redirect(url_for("page_busfahren"))
 	else:
 		anz_players = 0
 
@@ -253,7 +255,19 @@ def page_busfahren_lobby():
 				json_db.write(json_busfahren, "busfahren")
 			else:
 				flash("Dieser Nickname ist bereits vergeben oder der Name ist ungültig", "danger")
-		return redirect(url_for("page_busfahren_lobby"))
+			return redirect(url_for("page_busfahren_lobby"))
+		else:
+			nickname = session["nickname"]
+			if "players" not in json_busfahren:
+				json_busfahren["players"] = []
+			if nickname != "" and nickname not in json_busfahren["players"]:
+				session["nickname"] = nickname	
+				json_busfahren["players"].append(nickname)
+				json_db.write(json_busfahren, "busfahren")
+			else:
+				flash("Dieser Nickname ist bereits vergeben oder der Name ist ungültig", "danger")
+			return redirect(url_for("page_busfahren_lobby"))
+
 
 	return render_template("/busfahren_lobby.html", form=form, josn_data=json_data, anz_players=anz_players, json_busfahren=json_busfahren)
 
@@ -263,6 +277,7 @@ def page_busfahren_lobby():
 def page_busfahren_final(_guess):
 	form = HTML_Forms.Form(request.form)
 	json_busfahren = json_db.read("busfahren")
+	global class_busfahren
 
 	if "final-timeline" not in json_busfahren:
 		json_busfahren["final-timeline"] = []
@@ -270,6 +285,7 @@ def page_busfahren_final(_guess):
 		json_busfahren["final-sips-added"] = 0
 
 	if "final-cards" not in json_busfahren:
+		print("__init__")
 		class_busfahren = busfahren.Busfahren(len(json_busfahren["players"]))
 		json_busfahren["final-cards"] = class_busfahren.play_final(init=True)
 		json_busfahren["final-card-index"] = 0
@@ -277,7 +293,9 @@ def page_busfahren_final(_guess):
 		return render_template("busfahren_final.html", json_busfahren=json_busfahren)
 
 	if _guess != None and _guess != "" and _guess != "None":
+		
 		data = class_busfahren.play_final(guess=_guess, cards=json_busfahren["final-cards"])
+		print(data)
 		if data[0] != 0:
 			json_busfahren["final-card-index"] += 1
 		else:

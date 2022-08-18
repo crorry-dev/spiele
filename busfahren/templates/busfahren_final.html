@@ -1,11 +1,15 @@
-{% extends 'includes/layout.html' %}
+{% if session["nickname"] == json_busfahren["final-looser"] %}s
+    {% extends 'includes/layout.html' %}
+{% else %}
+    {% extends 'includes/layout_busfahren.html' %}
+{% endif %}
 
 {% block body %}
 {% from "includes/_formhelpers.html" import render_field %}
 <center>
     <h1>Busfahren Finale</h1>
     <hr>
-    <h3>Looser muss Busfahren</h3>
+    <h3>"{{ json_busfahren["final-looser"] }}" muss Busfahren</h3>
     <hr>
     
     <div id="container-cards" style="width: 100%; padding: 20px; border: 3px solid #fff; text-align: center;">
@@ -32,10 +36,11 @@
     <a class="btn btn-outline-success btn-lg" href="/busfahren_final/lower">-</a>
     <a class="btn btn-outline-success btn-lg" href="/busfahren_final/equal">=</a>
     {% else %}
-    <a class="btn btn-outline-info btn-lg" href="/busfahren_final/None"
+    <a class="btn btn-outline-info btn-lg" href="/busfahren_final/None">refesh</a>
     {% endif %}
 
     <hr>
+
     <table class="table table-stripped" style="width: 50%;">
         <tr>
             <th>Nickname</th>
