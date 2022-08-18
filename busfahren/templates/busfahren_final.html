@@ -1,0 +1,55 @@
+{% extends 'includes/layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>Busfahren Finale</h1>
+    <hr>
+    <h3>Looser muss Busfahren</h3>
+    <hr>
+    
+    <div id="container-cards" style="width: 100%; padding: 20px; border: 3px solid #fff; text-align: center;">
+        <!-- Offene Karte-->
+        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">H</div>
+            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">H</div>
+            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">7</div>
+        </div>
+        <!-- Karte zu -->
+        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
+            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
+            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
+        </div>
+
+        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
+            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
+            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
+        </div>
+
+        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
+            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
+            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
+        </div>
+
+        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
+            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
+            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
+        </div>
+
+        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+            <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
+            <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
+            <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">?</div>
+        </div>
+    </div>
+
+    <a class="btn btn-outline-success btn-lg" href="">+</a>
+    <a class="btn btn-outline-success btn-lg" href="">-</a>
+    <a class="btn btn-outline-success btn-lg" href="">=</a>
+
+</center>
+{% endblock %}

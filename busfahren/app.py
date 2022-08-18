@@ -120,6 +120,8 @@ def busfahren_stop():
 	json_db.write(json_busfahren, "busfahren")
 	return redirect(url_for("home"))
 
+# ----------------------------------------------------------------------------------------- #
+
 @app.route('/busfahren_start', methods=["GET", "POST"])
 def busfahren_start():
 	json_busfahren = json_db.read("busfahren")
@@ -131,6 +133,11 @@ def busfahren_start():
 		class_busfahren = busfahren.Busfahren(len(json_busfahren["players"]))
 		json_busfahren["map"] = class_busfahren.get_map()
 		
+		max_round = 0
+		for i, _ in enumerate(json_busfahren["map"]):
+			for _ in json_busfahren["map"][i]:
+				max_round += 1
+		json_busfahren["max-round"] = max_round
 		for player in json_busfahren["players"]:
 			json_busfahren[player] =  class_busfahren.get_player_cards()
 			if "status" not in json_busfahren:
@@ -139,6 +146,8 @@ def busfahren_start():
 		json_db.write(json_busfahren, "busfahren")
 	
 	return redirect(url_for("page_busfahren"))
+
+# ----------------------------------------------------------------------------------------- #
 
 @app.route('/busfahren', methods=["GET", "POST"])
 def page_busfahren():
@@ -153,44 +162,53 @@ def page_busfahren():
 	check_var = len(json_busfahren["players"])
 	for p in range(0, len(json_busfahren["players"])):
 		if json_busfahren["status"][json_busfahren["players"][p]]:
-			print(json_busfahren["status"][json_busfahren["players"][p]])
 			check_var -= 1
+
 	if check_var == 0:
 		json_busfahren["round"] += 1
 		for p in range(0, len(json_busfahren["players"])):
 			json_busfahren["status"][json_busfahren["players"][p]] = False
 
+	if json_busfahren["round"] = json_busfahren["max-round"]:
+		flash("Das Spiel ist vorbei! {} muss Busfahren".format("LOOSER"), "success")
+		return redirect(url_for("page_busfahren_final"))
+
 	json_db.write(json_busfahren, "busfahren")
 	return render_template("busfahren.html", form=form, josn_data=json_data, json_busfahren=json_busfahren, check_var=check_var)
 
-@app.route('/card/<card>/<string:player>', methods=["GET", "POST"])
-def card(card, player):
+# ----------------------------------------------------------------------------------------- #
+
+@app.route('/card/<card>', methods=["GET", "POST"])
+def card(card):
 	json_busfahren = json_db.read("busfahren")
 	if "cards-used" not in json_busfahren:
 		json_busfahren["cards-used"] = {}
-	if player not in json_busfahren["cards-used"]:
-		json_busfahren["cards-used"][player] = []
+	if session["nickname"] not in json_busfahren["cards-used"]:
+		json_busfahren["cards-used"][session["nickname"]] = []
+
+	card_index = 0
+	row_index = 0
+	round_index = 0
+	for r_index,row in enumerate(json_busfahren["map"]):
+		row_index += 1
+		card_index = 0
+		for c in json_busfahren["map"][r_index]:
+			card_index += 1
+			round_index += 1
+			if round_index >= json_busfahren["round"]:
+				break
+		else:
+			continue
+		break
 	
-	list_card = [int(re.findall(r'\d+', card)[0]), str(re.findall(r'[A-Z]', card)[0])]
-	round_cards = []
-
-	for l in json_busfahren["map"][json_busfahren["round"]-1]:
-		round_cards.append(l[0])
-
-	if list_card in json_busfahren[player] and list_card[0] in round_cards:
-		json_busfahren[player].remove(list_card)
-		json_busfahren["cards-used"][player].append(list_card)
-
-		if "timeline" not in json_busfahren:
-			json_busfahren["timeline"] = []
-		
-		json_busfahren["timeline"].append([session["nickname"], list_card[0], json_busfahren["round"]])
-
+	if json_busfahren[session["nickname"]][int(card)][0] == json_busfahren["map"][row_index-1][card_index-1][0]:
+		json_busfahren["cards-used"][session["nickname"]].append(json_busfahren[session["nickname"]][int(card)])
+		del json_busfahren[session["nickname"]][int(card)]
 		json_db.write(json_busfahren, "busfahren")
-		flash("Die Karte wurde gelegt, teile jetzt mündlich mit wer die Schlücke trinken soll!", "success")
-	else:
-		flash("Diese Karte kann in dieser Runde nicht gelegt werden!", "danger")
+		flash("Sie haben die Karte abgelegt, verteilen Sie nun mündlich die schlücke", "success")
 	return redirect(url_for("page_busfahren"))
+
+# ----------------------------------------------------------------------------------------- #
 
 @app.route('/busfahren_lobby', methods=["GET", "POST"])
 def page_busfahren_lobby():
@@ -219,17 +237,26 @@ def page_busfahren_lobby():
 
 	return render_template("/busfahren_lobby.html", form=form, josn_data=json_data, anz_players=anz_players, json_busfahren=json_busfahren)
 
+# ----------------------------------------------------------------------------------------- #
 
+@app.route('/busfahren_final', methods=["GET", "POST"])
+def page_busfahren_final():
+	form = HTML_Forms.Form(request.form)
+	json_busfahren = json_db.read("busfahren")
 
+	if "final" not in json_busfahren:
+		json_busfahren["final"] = {}
 
+	return render_template("busfahren_final.html", form=form, json_busfahren=json_busfahren)
 
-
-
-
-
+# ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
 
 # App run
 if __name__ == "__main__":
 	#ipAddress = socket.gethostbyname(socket.gethostname())
 	ipAddress = "0.0.0.0"
-	app.run(host=ipAddress, port=5050, debug=True)
+	app.run(host=ipAddress, port=5555, debug=True)
