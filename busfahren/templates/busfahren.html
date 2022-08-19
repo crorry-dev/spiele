@@ -102,7 +102,7 @@
     </div>
 
     <hr><hr>
-    {% if json_busfahren["status"][session["nickname"]]|length == 0 %}
+    {% if json_busfahren[session["nickname"]]|length == 0 %}
         <h3>Du hast keine Karten mehr, daher bist du automatisch bereit!</h3>
     {% elif not json_busfahren["status"][session["nickname"]] %}
         <form method="POST">

@@ -1,0 +1,17 @@
+{% extends 'includes/layout_busfahren.html' %}
+
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>{{ json_busfahren["final-looser"] }} hat das Busfahren beendet!</h1>
+    <hr>
+    <h3>Er musste {{ json_busfahren["final-sips-added"] }} Schlücke trinken!</h3>
+    <hr>
+    
+    {% if "nickname" in session %}
+        <a class="btn btn-outline-success btn-lg" href="/busfahren_stop">Erneut Spielen</a>
+    {% endif %}
+
+</center>
+{% endblock %}

@@ -24,8 +24,8 @@ def generateRandomPassword(length=8):
 	return result_str
 
 
-def string2datetime(d, t):
-	return datetime.datetime.strptime(str(d) + str(t), "%Y-%m-%d %H:%M:%S")
+def string2datetime(dt):
+	return datetime.datetime.strptime(str(dt), "%Y-%m-%d %H:%M:%S")
 
 
 

@@ -1,5 +1,4 @@
 #-*- coding:utf-8 -*-
-
 try:
 	from flask import Flask, render_template, flash, redirect, url_for, request, session, logging , send_from_directory, send_file
 	import random, datetime, re
@@ -155,10 +154,8 @@ def page_busfahren():
 	json_data = json_db.read()
 	json_busfahren = json_db.read("busfahren")
 
-	# auto_bereit
-
 	if "nickname" not in session:
-		return redirect(url_for("busfahren_stop"))
+		return redirect(url_for("page_busfahren_lobby"))
 
 	if request.method == "POST":
 		session["busfahren_status"] = True
@@ -182,15 +179,23 @@ def page_busfahren():
 		for p in json_busfahren["players"]:
 			anz_cards.append([p, len(json_busfahren[p])])
 		
-		anz_player_cards = app_functions.sortListInList(anz_cards, 1)
-		# wenn die Letzten gleich sind = random
-		looser = anz_player_cards[-1][0]
-		
-		json_busfahren["final-looser"] = looser
+
+		if "final-looser" not in json_busfahren:
+			anz_player_cards = app_functions.sortListInList(anz_cards, 1)
+
+			looser_anz = anz_player_cards[-1][1]
+			looser_list = []
+			for i,_ in enumerate(anz_cards):
+				if anz_cards[i][1] == looser_anz:
+					looser_list.append(anz_cards[i]) 
+
+			looser = looser_list[random.randint(0, len(looser_list)-1)][0] # anz_player_cards[-1][0]
+
+			json_busfahren["final-looser"] = looser
 		json_db.write(json_busfahren, "busfahren")
 
-		if session["nickname"] != looser:
-			flash("Das Spiel ist vorbei! {} musst Busfahren".format(looser), "success")
+		if session["nickname"] != json_busfahren["final-looser"]:
+			flash("Das Spiel ist vorbei! {} musst Busfahren".format(json_busfahren["final-looser"]), "success")
 		else:
 			flash("Das Spiel ist vorbei! DU musst Busfahren... Viel Erfolg ;) ", "danger")
 		return redirect(url_for("page_busfahren_final", _guess="None"))
@@ -211,7 +216,7 @@ def card(card):
 	card_index = 0
 	row_index = 0
 	round_index = 0
-	for r_index,row in enumerate(json_busfahren["map"]):
+	for r_index,_ in enumerate(json_busfahren["map"]):
 		row_index += 1
 		card_index = 0
 		for c in json_busfahren["map"][r_index]:
@@ -247,6 +252,15 @@ def page_busfahren_lobby():
 		return redirect(url_for("page_busfahren"))
 	else:
 		anz_players = 0
+
+	if "nickname" in session:
+		if "players" not in json_busfahren:
+			json_busfahren["players"] = []
+			if nickname != "" and nickname not in json_busfahren["players"]:
+				session["nickname"] = nickname	
+				json_busfahren["players"].append(nickname)
+				json_db.write(json_busfahren, "busfahren")
+				return redirect(url_for("page_busfahren_lobby"))
 
 	if request.method == "POST":
 		if "nickname" not in session:
@@ -287,6 +301,8 @@ def page_busfahren_final(_guess):
 	# if final_round > round_played: show json_busfahren["final-sips-added"] and destroy add after 1 minute
 	
 
+	
+
 	if "final-timeline" not in json_busfahren:
 		json_busfahren["final-timeline"] = []
 	if "final-sips-added" not in json_busfahren:
@@ -300,20 +316,48 @@ def page_busfahren_final(_guess):
 		json_db.write(json_busfahren, "busfahren")
 		return render_template("busfahren_final.html", json_busfahren=json_busfahren)
 
+	
+
 	if _guess != None and _guess != "" and _guess != "None":
 		
 		data = class_busfahren.play_final(guess=_guess, cards=json_busfahren["final-cards"])
 		print(data)
 		if data[0] != 0:
+			flash("Richtig! Weiter so!", "success")
 			json_busfahren["final-card-index"] += 1
 		else:
+			flash("Falsch! Trinke {} Schlücke".format(json_busfahren["final-card-index"] + 1), "danger")
+			json_busfahren["final-timeline"].append([json_busfahren["final-looser"], json_busfahren["final-card-index"] + 1])
 			json_busfahren["final-sips-added"] += json_busfahren["final-card-index"] + 1
 			json_busfahren["final-cards"] = data[1]
 			json_busfahren["final-cards"] = data[1]
+			json_busfahren["final-card-index"] = 0
+			
 
 	json_db.write(json_busfahren, "busfahren")
 
+	if json_busfahren["final-card-index"] >= len(json_busfahren["final-cards"])-1:
+		flash("Du hast das Busfahren beendet! Herzlichen Glückwunsch!", "success")
+		return redirect(url_for("busfahren_final_end"))
+
 	return render_template("busfahren_final.html", json_busfahren=json_busfahren)
+
+
+@app.route('/busfahren_final_end', methods=["GET", "POST"])
+def busfahren_final_end():
+	json_busfahren = json_db.read("busfahren")
+
+	if "final-over-ts" not in json_busfahren:
+		json_busfahren["final-over-ts"] = str(datetime.datetime.now() + datetime.timedelta(minutes=2))[:-7]
+	else:
+		dt1 = app_functions.string2datetime(json_busfahren["final-over-ts"])
+		dt2 = app_functions.string2datetime(str(datetime.datetime.now())[:-7])
+		if dt2 > dt1:
+			return redirect(url_for("busfahren_stop"))
+
+	json_db.write(json_busfahren, "busfahren")
+
+	return render_template("busfahren_final_end.html", json_busfahren=json_busfahren)
 
 # ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #
