@@ -155,11 +155,16 @@ def page_busfahren():
 	json_data = json_db.read()
 	json_busfahren = json_db.read("busfahren")
 
+	# auto_bereit
+
 	if "nickname" not in session:
 		return redirect(url_for("busfahren_stop"))
 
 	if request.method == "POST":
 		session["busfahren_status"] = True
+		json_busfahren["status"][session["nickname"]] = True
+
+	if len(json_busfahren[session["nickname"]]) == 0:
 		json_busfahren["status"][session["nickname"]] = True
 
 	check_var = len(json_busfahren["players"])
@@ -179,7 +184,7 @@ def page_busfahren():
 		
 		anz_player_cards = app_functions.sortListInList(anz_cards, 1)
 		# wenn die Letzten gleich sind = random
-		looser = anz_cards[-1][0]
+		looser = anz_player_cards[-1][0]
 		
 		json_busfahren["final-looser"] = looser
 		json_db.write(json_busfahren, "busfahren")
@@ -278,6 +283,9 @@ def page_busfahren_final(_guess):
 	form = HTML_Forms.Form(request.form)
 	json_busfahren = json_db.read("busfahren")
 	global class_busfahren
+
+	# if final_round > round_played: show json_busfahren["final-sips-added"] and destroy add after 1 minute
+	
 
 	if "final-timeline" not in json_busfahren:
 		json_busfahren["final-timeline"] = []
