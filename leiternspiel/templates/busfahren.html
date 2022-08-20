@@ -1,0 +1,148 @@
+{% extends 'includes/layout_busfahren.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>Busfahren - Runde {{ json_busfahren["round"] }} von {{ json_busfahren["max-round"] }}</h1>
+    <hr>
+    <div id="container-cards" style="width: 100%; padding: 5px; border: 3px solid #fff; text-align: center;">
+    
+    {% set count = namespace(value=0) %}
+    {% for card in json_busfahren["map"] %}
+    {% for c in card %}
+        {% set count.value = count.value + 1 %}
+        {% if count.value <= json_busfahren["round"] %}
+        <div id="triangle_card" style="width:50px; height:75px; border-style:solid; border-radius:10px;position:relative; display:inline-block;margin-left: 10px;">
+            {% if c[1] == "H" %}
+                <div id="corner-left" style="font-size: 8px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/H.png" alt="H" width="10" height="10"></div>
+                <div id="coner-bottom-right" style="font-size: 8px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/H.png" alt="H" width="10" height="10"></div>
+            {% elif c[1] == "D" %}
+                <div id="corner-left" style="font-size: 8px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/D.png" alt="D" width="10" height="10"></div>
+                <div id="coner-bottom-right" style="font-size: 8px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/D.png" alt="D" width="10" height="10"></div>
+            {% elif c[1] == "S" %}
+                <div id="corner-left" style="font-size: 8px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/S.png" alt="S" width="10" height="10"></div>
+                <div id="coner-bottom-right" style="font-size: 8px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/S.png" alt="S" width="10" height="10"></div>
+            {% elif c[1] == "C" %}
+                <div id="corner-left" style="font-size: 8px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/C.png" alt="C" width="10" height="10"></div>
+                <div id="coner-bottom-right" style="font-size: 8px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/C.png" alt="C" width="10" height="10"></div>
+            {% else %}
+                <div id="corner-left" style="font-size: 8px; position:absolute; top:5px; left: 5px;;"> ? </div>
+                <div id="coner-bottom-right" style="font-size: 8px; position:absolute; bottom:5px; right:5px;"> ? </div>
+            {% endif %}
+            
+
+            {% if c[0] < 10 %}
+            <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 15px;">{{ c[0] }}</div>
+            {% elif c[0] == 11 %}
+                <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> B </div>
+            {% elif c[0] == 12 %}
+                <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> D </div>
+            {% elif c[0] == 13 %}
+                <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> K </div>
+            {% elif c[0] == 14 %}
+                <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> A </div>
+            {% else %}
+                <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 10px;"> {{ c[0] }} </div>
+            {% endif %}
+        </div>
+
+        {% else %}
+        <div id="triangle_card" style="width:50px; height:75px; border-style:solid; border-radius:10px;position:relative; display:inline-block;margin-left: 10px; background-color: gray;">
+            <div id="card-value" style="font-size: 20px; position:absolute; top: 20px; left: 15px; color: white;">?</div>
+        </div>
+        {% endif %}
+
+    {% endfor %}
+    <br><br><br><br>
+    {% endfor %}
+    </div>
+    <hr><hr>
+    <h3>Meine Karten</h3>
+    <p>Zum Legen die entsprechende Karte drücken</p>
+    <br>
+
+    <div id="container-cards" style="width: 100%; padding: 20px; border: 3px solid #fff; text-align: center;">
+    {% for card in json_busfahren[session["nickname"]] %}
+    <a href="/card/{{ loop.index - 1}}">
+        <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
+            {% if card[1] == "H" %}
+                <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/H.png" alt="H" width="25" height="25"></div>
+                <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/H.png" alt="H" width="25" height="25"></div>
+            {% elif card[1] == "S" %}
+                <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/S.png" alt="S" width="25" height="25"></div>
+                <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/S.png" alt="S" width="25" height="25"></div>
+            {% elif card[1] == "D" %}
+                <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/D.png" alt="D" width="25" height="25"></div>
+                <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/D.png" alt="D" width="25" height="25"></div>
+            {% elif card[1] == "C" %}
+                <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;"><img src="static/uploads/C.png" alt="C" width="25" height="25"></div>
+                <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;"><img src="static/uploads/C.png" alt="C" width="25" height="25"></div>
+            {% else %}
+                <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">?</div>
+                <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">?</div>
+            {% endif %}
+            
+            
+            {% if card[0] < 10 %}
+            <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 35px;"> {{ card[0] }} </div>
+            {% elif card[0] == 11 %}
+                <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 35px;"> B </div>
+            {% elif card[0] == 12 %}
+                <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 35px;"> D </div>
+            {% elif card[0] == 13 %}
+                <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 35px;"> K </div>
+            {% elif card[0] == 14 %}
+                <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 35px;"> A </div>
+            {% else %}
+                <div id="card-value" style="font-size: 48px; position:absolute; top: 30px; left: 25px;">{{ card[0] }}</div>
+            {% endif %}
+        </div>
+    </a>
+    {% endfor %}
+    </div>
+
+    <hr><hr>
+    {% if json_busfahren[session["nickname"]]|length == 0 %}
+        <h3>Du hast keine Karten mehr, daher bist du automatisch bereit!</h3>
+    {% elif not json_busfahren["status"][session["nickname"]] %}
+        <form method="POST">
+            <center><input type="submit" class="btn btn-outline-success btn-lg" value="Bereit" /></center>
+        </form>
+    {% else %}
+        <h3>Du bist bereit!</h3>
+        <a class="btn btn-outline-info btn-lg" href="/busfahren">refresh</a>
+    {% endif %}
+    <hr>
+    <table class="table table-stripped" style="width: 50%;">
+        <tr>
+            <th>Nickname</th>
+            <th>Status</th>
+        </tr>
+        {% for player in json_busfahren["status"] %}
+        <tr>
+            <td>{{ player }}</td>
+            <td>{{ json_busfahren["status"][player] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <hr>
+    <h3>Timeline</h3>
+    <table class="table table-stripped" style="width: 50%;">
+        <tr>
+            <th>Nickname</th>
+            <th>Gelegte Karte</th>
+            <th>Runde</th>
+        </tr>
+        {% for t in json_busfahren["timeline"] %}
+        <tr>
+            <td>{{ t[0] }}</td>
+            <td>{{ t[1] }}</td>
+            <td>{{ t[2] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</center>
+{% endblock %}

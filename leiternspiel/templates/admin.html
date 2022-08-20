@@ -1,0 +1,40 @@
+{% extends 'includes/layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center><h1>Admin</h1></center>
+<hr>
+<center>
+    <table class="table table-stripped">
+        <tr>
+            <th>
+                Datetime
+            </th>
+            <th>
+                IP
+            </th>
+            <th>
+                Tracking
+            </th>
+            <th>
+                more
+            </th>
+        </tr>
+        {% for data in json_data_requests %}
+        <tr>
+            <td>{{ data }}</td>
+            <td>{{ json_data_requests[data]["ip"] }}</td>
+            <td>
+                <a href="https://www.ip-tracker.org/lookup.php?ip={{ json_data_requests[data]['ip'] }}">
+                    {{ json_data_requests[data]["ip"] }}
+                </a>
+            </td>
+            <td>
+                {{ json_data_requests[data]["info"] }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+		<meta http-equiv="refresh" content="5" >
+		<title>Software Dieburg - Game</title>
+		
+		
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+		<!-- <script src="/static/js/jquery.js"></script> -->
+	</head>
+	<body>
+	{% include 'includes/_navbar.html' %}
+	<!-- <div class="container"> -->
+	{% include 'includes/_messages.html' %}
+	<hr><hr>
+	{% block body %}
+	
+	{% endblock %}
+	<!-- </div> -->
+
+	{% include 'includes/_footer.html' %}
+	<script src="/static/js/bootstrap.js"></script>
+	</body>
+</html>

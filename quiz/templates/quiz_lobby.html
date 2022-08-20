@@ -1,0 +1,25 @@
+{% extends 'includes/layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>Quiz Lobby</h1>
+    <hr>
+
+    {% if "nickname" not in session %}
+        <form method="POST">
+            <p>Dein Nickname darf nur zusammengeschrieben sein!</p>
+            <div class="form-group" >{{render_field(form.nickname, class="form-control")}}</div>
+            <br>
+            <center><input type="submit" class="btn btn-outline-success btn-lg" value="Enter" /></center>
+        </form>
+    {% else %}
+        <a href="/quiz_create_new_lobby" class="btn btn-outline-success btn-lg">Neues Quiz erstellen</a>
+    {% endif %}
+
+    <div id="lobbys">
+        
+    </div>
+    
+</center>
+{% endblock %}
