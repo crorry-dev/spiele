@@ -40,6 +40,13 @@ class Form(Form):
     nickname = StringField("Nickname", [validators.Length(min=1, max=9999)], render_kw={"style": "width: 50%; font-size: 20px;"})
     
     # Quiz
-    quiz_title = StringField("Nickname", [validators.Length(min=1, max=9999)], render_kw={"style": "width: 50%; font-size: 20px;"})
+    quiz_title = StringField("Quiz Name", [validators.Length(min=1, max=9999)], render_kw={"style": "width: 50%; font-size: 20px;"})
     quiz_mode = SelectField("Rechte", choices=["Jeder darf Fragen und Antworten erstellen", "Nur Ich darf Fragen und Antworten erstellen"])
     
+    # Questions
+    question = StringField("Frage", [validators.Length(min=1, max=9999)], render_kw={"style": "width: 50%; font-size: 20px;"})
+    answer_a = StringField("Richtige Antwort", [validators.Length(min=1, max=9999)], render_kw={"style": "width: 50%; font-size: 20px;"})
+    answer_b = StringField("Antwort B", [validators.Length(min=1, max=9999)], render_kw={"style": "width: 50%; font-size: 20px;"})
+    answer_c = StringField("Antwort C", [validators.Length(min=1, max=9999)], render_kw={"style": "width: 50%; font-size: 20px;"})
+    answer_d = StringField("Antwort D", [validators.Length(min=1, max=9999)], render_kw={"style": "width: 50%; font-size: 20px;"})
+

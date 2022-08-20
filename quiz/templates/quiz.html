@@ -5,6 +5,18 @@
 <center>
     <h1>Quiz</h1>
     <hr>
-    
+    <hr>
+    <h3>{{ json_data["users"][session["nickname"]]["tmp-group"]["open-questions"][json_data["users"][session["nickname"]]["tmp-group"]["question-index"]|string]["question"] }}</h3>
+
+    {% for answer in json_data["users"][session["nickname"]]["tmp-group"]["open-questions"][json_data["users"][session["nickname"]]["tmp-group"]["question-index"]|string]["answers"] %}
+        <p>{{ answer }} : {{ json_data["users"][session["nickname"]]["tmp-group"]["open-questions"][json_data["users"][session["nickname"]]["tmp-group"]["question-index"]|string]["answers"][answer] }}</p>
+    {% endfor %}
+    <form method="POST">
+        <input type="submit" class="btn btn-outline-success btn-lg" value="Antwort A" name="Antwort" />
+        <input type="submit" class="btn btn-outline-success btn-lg" value="Antwort B" name="Antwort" />
+
+        <input type="submit" class="btn btn-outline-success btn-lg" value="Antwort C" name="Antwort" />
+        <input type="submit" class="btn btn-outline-success btn-lg" value="Antwort D" name="Antwort" />
+    </form>
 </center>
 {% endblock %}

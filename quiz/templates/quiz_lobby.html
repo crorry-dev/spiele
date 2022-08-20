@@ -17,9 +17,28 @@
         <a href="/quiz_create_new_lobby" class="btn btn-outline-success btn-lg">Neues Quiz erstellen</a>
     {% endif %}
 
-    <div id="lobbys">
-        
-    </div>
-    
+    <table class="table table-stripped">
+        <tr>
+            <th>Gruppen Name</th>
+            <th>Anzahl Fragen</th>
+            <th>Modus</th>
+            <th>Owner</th>
+            <th>Aktion</th>
+        </tr>
+        {% for group in json_data["groups"] %}
+            <tr>
+                <td>{{ group }}</td>
+                <td>{{ json_data["groups"][group]["questions"]|length }}</td>
+                <td>{{ json_data["groups"][group]["mode"] }}</td>
+                {% if session["nickname"] == json_data["groups"][group]["owner"] %}
+                <td><a href="/quiz_show/{{ group }}">Quiz bearbeiten</a></td>
+                {% else %}
+                <td>{{ json_data["groups"][group]["owner"] }}</td>
+                {% endif %}
+                <td><a href="/quiz/{{ group }}">Quiz Starten</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
 </center>
 {% endblock %}

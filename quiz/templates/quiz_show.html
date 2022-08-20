@@ -1,0 +1,43 @@
+{% extends 'includes/layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>Quiz</h1>
+    <hr>
+    <h3>Neue Quizfrage erstellen</h3>
+    <hr>
+    <form method="POST">
+        <p>Dein Nickname darf nur zusammengeschrieben sein!</p>
+        <div class="form-group" >{{render_field(form.question, class="form-control")}}</div>
+        <div class="form-group" >{{render_field(form.answer_a, class="form-control")}}</div>
+        <div class="form-group" >{{render_field(form.answer_b, class="form-control")}}</div>
+        <div class="form-group" >{{render_field(form.answer_c, class="form-control")}}</div>
+        <div class="form-group" >{{render_field(form.answer_d, class="form-control")}}</div>
+        <br>
+        <center><input type="submit" class="btn btn-outline-success btn-lg" value="hinzufügen" /></center>
+    </form>
+
+    <hr>
+
+    <table class="table table-stripped">
+        <tr>
+            <th>Frage</th>
+            <th>Richtige Antwort</th>
+            <th>Weitere Antwort</th>
+            <th>Weitere Antwort</th>
+            <th>Weitere Antwort</th>
+        </tr>
+        {% for question in json_data["groups"][id]["questions"] %}
+        <tr>
+            <td>{{ question }}</td>
+            <td>{{ json_data["groups"][id]["questions"][question]["a"] }}</td>
+            <td>{{ json_data["groups"][id]["questions"][question]["b"] }}</td>
+            <td>{{ json_data["groups"][id]["questions"][question]["c"] }}</td>
+            <td>{{ json_data["groups"][id]["questions"][question]["d"] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</center>
+{% endblock %}
