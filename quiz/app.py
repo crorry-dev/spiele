@@ -54,13 +54,13 @@ def quiz_lobby():
 
 @app.route('/quiz_create_new_lobby', methods=["GET", "POST"])
 def quiz_create_new_lobby():
-	form = HTML_Forms.Form(request.form)
-	json_data = json_db.read()
+    form = HTML_Forms.Form(request.form)
+    json_data = json_db.read()
 
     if request.method == "POST":
-        
+        title = form.quiz_title.data
 
-	return render_template("quiz_create_new_lobby.html", form=form, json_data=json_data)
+    return render_template("quiz_create_new_lobby.html", form=form, json_data=json_data)
 
 # ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #
