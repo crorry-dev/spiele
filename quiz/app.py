@@ -200,7 +200,7 @@ def quiz_leaderboard(id):
     
 
     leaderboad = py_quiz.makeRanking(json_data["groups"][id]["leaderboard"])
-    json_data["groups"][id]["leaderboad"] = leaderboad
+    json_data["groups"][id]["leaderboard"] = leaderboad
 
     json_db.write(json_data)
     return render_template("quiz_leaderboard.html", json_data=json_data, id=id)
