@@ -2,7 +2,7 @@
 import json
 
 DEFAULT_DB_DATA = {}
-DBs = []
+DBs = ["db", "ip"]
 #pwd = "/home/pi/saufen2go/flask/"
 pwd = "./db/"
 def write(data={}, filename="db"):
