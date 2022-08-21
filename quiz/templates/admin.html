@@ -5,7 +5,25 @@
 <center>
     <h1>Admin</h1>
     <hr>
-
+    <h3>Users</h3>
+    <table class="table table-stripped">
+        <tr>
+            <th>Nickname</th>
+            <th>Email</th>
+        </tr>
+        {% for user in json_data["page-users"] %}
+        <tr>
+            <td>{{ user }}</td>
+            <td>{{ json_data["page-users"][user]["email"] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+    <h3>Page Requests</h3>
     <table class="table table-stripped">
         <tr>
             <th>IP</th>
@@ -16,6 +34,8 @@
             <th>Country</th>
             <th>position</th>
             <th>Connection</th>
+            <th>Newest Login</th>
+            <th>Login Datetime</th>
         </tr>
         {% for ip in json_data_ip %}
         <tr>
@@ -27,6 +47,8 @@
             <td>{{ json_data_ip[ip]["country"] }}</td>
             <td>{{ json_data_ip[ip]["position"] }}</td>
             <td>{{ json_data_ip[ip]["connection"] }}</td>
+            <td>{{ json_data_ip[ip]["last-visit"]["new"] }}</td>
+            <td>{{ json_data_ip[ip]["last-visit"]["old"] }}</td>
         </tr>
         {% endfor %}
     </table>

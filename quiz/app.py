@@ -32,6 +32,9 @@ def login():
     if request.method == "POST":
         email = str(form.login_email.data)
         password = str(form.login_password.data)
+        if email not in json_data["page-users"]:
+            flash("Diese Email ist uns nicht bekannt!", "danger")
+            return redirect(url_for("login"))
         salt = json_data["page-users"][email]["password_salt"]
         if json_data["page-users"][email]["password"] == app_functions.password_hash(password, salt)[0]:
             flash("Sie haben sich erfolgreich eingeloggt", "success")
