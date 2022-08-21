@@ -1,12 +1,10 @@
 {
     "lobbys": {},
-    "users": {
-        "Crorry": {}
-    },
+    "users": {},
     "groups": {
         "Dieburg": {
             "mode": "rw",
-            "owner": "Crorry",
+            "owner": "t.cronauer@me.com",
             "questions": {
                 "Wie viele Einwohner hat dieburg": {
                     "a": "15 500",
@@ -35,20 +33,43 @@
             },
             "leaderboard": {
                 "0": {
-                    "nickname": "Crorry",
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 2,
+                    "questions": 2,
+                    "time": "0:00:03.643703",
+                    "trys": 1
+                },
+                "1": {
+                    "nickname": "t.cronauer@me.com",
                     "right-answers": 4,
                     "questions": 4,
-                    "time": "0:00:09.095981",
+                    "time": "0:00:12.182392",
+                    "trys": 2
+                }
+            },
+            "leaderboad": {
+                "0": {
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 4,
+                    "questions": 4,
+                    "time": "0:00:12.182392",
+                    "trys": 2
+                },
+                "1": {
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 2,
+                    "questions": 2,
+                    "time": "0:00:03.643703",
                     "trys": 1
                 }
             },
             "user-trys": {
-                "Crorry": 1
+                "t.cronauer@me.com": 2
             }
         },
         "Die leichten F\u00fcnf": {
             "mode": "rw",
-            "owner": "Crorry",
+            "owner": "t.cronauer@me.com",
             "questions": {
                 "Wie lautet die Quersumme aus 36?": {
                     "a": "9",
@@ -141,11 +162,31 @@
                     "d": "Password In Network"
                 }
             },
-            "leaderboard": {}
+            "leaderboard": {
+                "0": {
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 15,
+                    "questions": 15,
+                    "time": "0:00:59.143823",
+                    "trys": 1
+                }
+            },
+            "leaderboad": {
+                "0": {
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 15,
+                    "questions": 15,
+                    "time": "0:00:59.143823",
+                    "trys": 1
+                }
+            },
+            "user-trys": {
+                "t.cronauer@me.com": 1
+            }
         },
         "Serien": {
             "mode": "rw",
-            "owner": "Crorry",
+            "owner": "t.cronauer@me.com",
             "questions": {
                 "Wie hei\u00dft die m\u00e4nnliche Hauptfigur aus \u201eThe Mentalist\u201c": {
                     "a": "Patrick Jane",
@@ -160,11 +201,31 @@
                     "d": "Staffel 2, Folge 17"
                 }
             },
-            "leaderboard": {}
+            "user-trys": {
+                "t.cronauer@me.com": 1
+            },
+            "leaderboard": {
+                "0": {
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 2,
+                    "questions": 2,
+                    "time": "0:00:08.882152",
+                    "trys": 1
+                }
+            },
+            "leaderboad": {
+                "0": {
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 2,
+                    "questions": 2,
+                    "time": "0:00:08.882152",
+                    "trys": 1
+                }
+            }
         },
         "Deutsche Geschichte": {
             "mode": "rw",
-            "owner": "Crorry",
+            "owner": "t.cronauer@me.com",
             "questions": {
                 "Wann ist die Mauer zwischen Ost und Westdeutschland gefallen?": {
                     "a": "09. November 1989",
@@ -208,12 +269,11 @@
                     "c": "02. Januar 1920",
                     "d": "07. Dezember 1917"
                 }
-            },
-            "leaderboard": {}
+            }
         },
         "Allgemein Wissen 1": {
             "mode": "rw",
-            "owner": "Crorry",
+            "owner": "t.cronauer@me.com",
             "questions": {
                 "Wie hei\u00dft die Hauptstadt der Slowakei?": {
                     "a": "Bratislava",
@@ -636,14 +696,8 @@
                     "d": "Mit dem Teufel"
                 }
             },
-            "leaderboard": {}
-        }
-    },
-    "page-users": {
-        "t.cronauer@me.com": {
-            "nickname": "Crorry",
-            "password": "\\x00-\\xe7\\x8b\\xc7\\xcb\\xb9\\x06\\x01\\xfd\\xbb\\x9d\\x8c\\r\\xd7\\xe1\\xdeh\\xe1d\\x00\\xab\\xb9#Qj\\xd2\\x1abo\\xd2\\x9d",
-            "password_salt": ";\\xacw\\xea\\x84\\xa6@\\xbc#\\xe7'\\xff|\\x16\\x1d\\xca\\x02~.w\\xdf"
+            "leaderboard": {},
+            "leaderboad": {}
         }
     }
 }

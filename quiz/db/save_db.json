@@ -1,8 +1,6 @@
 {
     "lobbys": {},
-    "users": {
-        "Crorry": {}
-    },
+    "users": {},
     "groups": {
         "Dieburg": {
             "mode": "rw",
@@ -35,15 +33,38 @@
             },
             "leaderboard": {
                 "0": {
-                    "nickname": "Crorry",
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 2,
+                    "questions": 2,
+                    "time": "0:00:03.643703",
+                    "trys": 1
+                },
+                "1": {
+                    "nickname": "t.cronauer@me.com",
                     "right-answers": 4,
                     "questions": 4,
-                    "time": "0:00:09.095981",
+                    "time": "0:00:12.182392",
+                    "trys": 2
+                }
+            },
+            "leaderboad": {
+                "0": {
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 4,
+                    "questions": 4,
+                    "time": "0:00:12.182392",
+                    "trys": 2
+                },
+                "1": {
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 2,
+                    "questions": 2,
+                    "time": "0:00:03.643703",
                     "trys": 1
                 }
             },
             "user-trys": {
-                "Crorry": 1
+                "t.cronauer@me.com": 2
             }
         },
         "Die leichten F\u00fcnf": {
@@ -140,8 +161,7 @@
                     "c": "Password Identification Number",
                     "d": "Password In Network"
                 }
-            },
-            "leaderboard": {}
+            }
         },
         "Serien": {
             "mode": "rw",
@@ -159,8 +179,7 @@
                     "c": "Staffel 2, Folge 4",
                     "d": "Staffel 2, Folge 17"
                 }
-            },
-            "leaderboard": {}
+            }
         },
         "Deutsche Geschichte": {
             "mode": "rw",
@@ -208,8 +227,7 @@
                     "c": "02. Januar 1920",
                     "d": "07. Dezember 1917"
                 }
-            },
-            "leaderboard": {}
+            }
         },
         "Allgemein Wissen 1": {
             "mode": "rw",
@@ -635,8 +653,7 @@
                     "c": "Mit Gott",
                     "d": "Mit dem Teufel"
                 }
-            },
-            "leaderboard": {}
+            }
         }
     },
     "page-users": {

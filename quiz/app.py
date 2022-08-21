@@ -1,7 +1,4 @@
 #-*- coding:utf-8 -*-
-from turtle import right
-
-
 try:
 	from flask import Flask, render_template, flash, redirect, url_for, request, session, logging , send_from_directory, send_file
 	import random, datetime, re
@@ -79,11 +76,11 @@ def register():
 
             json_data["page-users"][email] = {"nickname": nickname, "password": hashed_passwod[0], "password_salt": hashed_passwod[1]}
             json_db.write(json_data)
-            py_send_mail.send_mail(email, "Registrierung bei Software-Dieburg", "Vielen Dank für Ihre Registrierung bei Software-Dieburg.de!")
+            py_send_mail.send_mail(email, "Registrierung bei Software-Dieburg Games - Quiz", "Vielen Dank für Ihre Registrierung")
             flash("Sie haben Sich erfolgreich ergistriert!", "success")
             return redirect(url_for("login"))
         else:
-            flash("Alle Felder müssen ausgefüllt sein außer der Telefonnummer!", "danger")
+            flash("Alle Felder müssen ausgefüllt sein!", "danger")
 
     return render_template("register.html", form=form, json_data=json_data)
 
