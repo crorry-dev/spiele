@@ -2,59 +2,13 @@
     "lobbys": {},
     "users": {
         "Tobi": {},
-        "Test": {}
+        "Test": {},
+        "t.cronauer@me.com": {}
     },
     "groups": {
-        "test": {
-            "mode": "rw",
-            "owner": "Tobi",
-            "questions": {
-                "1": {
-                    "a": "1",
-                    "b": "2",
-                    "c": "3",
-                    "d": "4"
-                }
-            },
-            "leaderboard": {
-                "0": {
-                    "nickname": "Tobi",
-                    "right-answers": 1,
-                    "questions": 1,
-                    "time": "0:00:02.184606"
-                },
-                "1": {
-                    "nickname": "Tobi",
-                    "right-answers": 0,
-                    "questions": 1,
-                    "time": "0:00:00.748176"
-                }
-            },
-            "user-trys": {
-                "Tobi": 2
-            }
-        },
-        "Software-Dieburg": {
-            "mode": "rw",
-            "owner": "Tobi",
-            "questions": {
-                "Wer ist der Kleinunternehmer von Software Dieburg?": {
-                    "a": "Tobias Cronauer",
-                    "b": "Software Dieburg ist kein Kleinunternehmen",
-                    "c": "Justus Blank",
-                    "d": "Alexander Knauer"
-                },
-                "Welche Dienstleistungen bietet Software Dieburg nicht an?": {
-                    "a": "Medientechnik",
-                    "b": "Software",
-                    "c": "IT-Dienstleistungen",
-                    "d": "Veranstaltungstechnik"
-                }
-            }
-        },
         "Die leichten F\u00fcnf": {
             "mode": "rw",
-            "owner": "Tobi",
+            "owner": "t.cronauer@me.com",
             "questions": {
                 "Wie lautet die Quersumme aus 36?": {
                     "a": "9",
@@ -146,38 +100,38 @@
                     "c": "Password Identification Number",
                     "d": "Password In Network"
                 }
-            }
-        },
-        "Test": {
-            "mode": "rw",
-            "owner": "Tobi",
-            "questions": {
-                "1": {
-                    "a": "1",
-                    "b": "2",
-                    "c": "3",
-                    "d": "4"
-                }
-            },
-            "user-trys": {
-                "Tobi": 2
             },
             "leaderboard": {
                 "0": {
-                    "nickname": "Tobi",
-                    "right-answers": 0,
-                    "questions": 1,
-                    "time": "0:00:01.102005",
+                    "nickname": "t.cronauer@me.com",
+                    "right-answers": 2,
+                    "questions": 2,
+                    "time": "0:02:21.569989",
                     "trys": 1
-                },
-                "1": {
-                    "nickname": "Tobi",
-                    "right-answers": 0,
-                    "questions": 1,
-                    "time": "0:00:00.979563",
-                    "trys": 2
                 }
+            },
+            "leaderboad": {},
+            "user-trys": {
+                "t.cronauer@me.com": 1
             }
+        },
+        "test": {
+            "mode": "rw",
+            "owner": "t.cronauer@me.com",
+            "questions": {}
+        },
+        "Quiz ?": {
+            "mode": "rw",
+            "owner": "t.cronauer@me.com"
+        }
+    },
+    "page-users": {
+        "t.cronauer@me.com": {
+            "firstname": "Tobias",
+            "name": "Cronauer",
+            "telephone": "017680760104",
+            "password": "\\x0ftA\\x96pN$\\xd1\\xde\\xf5g\\x0e\\x99+\\x01\\xa6\\x9d\\xb0M\\x19\\xed*\\x93w9\\x92(\\x9a\\xe9\\xe5(\\xa4",
+            "password_salt": "d\\x83\\x96a{\\x07\\x0f~?%q\\x1c\\x18\\x917\\xe5U\\xa9\\xe3\\xcc\\xf6"
         }
     }
 }

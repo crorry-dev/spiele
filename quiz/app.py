@@ -1,8 +1,11 @@
 #-*- coding:utf-8 -*-
+from turtle import right
+
+
 try:
 	from flask import Flask, render_template, flash, redirect, url_for, request, session, logging , send_from_directory, send_file
 	import random, datetime, re
-	import json_db, HTML_Forms, app_functions
+	import json_db, HTML_Forms, app_functions, py_send_mail
 	import py_quiz
 except Exception as e:
 	with open("log.log", 'w') as file:
@@ -22,6 +25,89 @@ app.secret_key = "SoftwareDieburg_P!nD@t@_{}".format(random.randint(1000000, 999
 # MAIN FLASK PAGES
 # ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    form = HTML_Forms.Form(request.form)
+    json_data = json_db.read()
+    if request.method == "POST":
+        email = str(form.login_email.data)
+        password = str(form.login_password.data)
+        salt = json_data["page-users"][email]["password_salt"]
+        if json_data["page-users"][email]["password"] == app_functions.password_hash(password, salt)[0]:
+            flash("Sie haben sich erfolgreich eingeloggt", "success")
+            session["email"] = email
+            session["nickname"] = email
+            session["name"] = json_data["page-users"][email]["firstname"] + " " + json_data["page-users"][email]["name"]
+            return redirect(url_for("quiz_lobby"))
+        else:
+            flash("Die eingegebenen Nutzerdaten stimmen nicht!", "danger")
+            return redirect(url_for("login"))
+
+    return render_template("login.html", form=form, json_data=json_data)
+
+# ----------------------------------------------------------------------------------------- #
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+	form = HTML_Forms.Form(request.form)
+	json_data = json_db.read()
+
+	if request.method == "POST": 
+		firstname = str(form.register_firstname.data)
+		name = str(form.register_name.data)
+		email = str(form.register_email.data)
+		password = str(form.register_password.data)
+		confirm_password = str(form.register_confirm_password.data)
+		telephone = str(form.register_telephone.data)
+
+		hashed_passwod = app_functions.password_hash(password)
+
+		if firstname != "" and name != "" and email != "" and password != "" and confirm_password != "":
+			if "page-users" not in json_data:
+				json_data["page-users"] = {}
+			if email in json_data["page-users"]:
+				flash("Diese Emailadressse ist bereits mit einem Account verknüpft! Wählen Sie Passwort vergessen auf der Login Seite!", "danger")
+				return redirect(url_for("register"))
+			json_data["page-users"][email] = {"firstname": firstname, "name": name, "telephone": telephone, "password": hashed_passwod[0], "password_salt": hashed_passwod[1]}
+			json_db.write(json_data)
+			py_send_mail.send_mail(email, "Registrierung bei Software-Dieburg", "Vielen Dank für Ihre Registrierung bei Software-Dieburg.de!")
+			flash("Sie haben Sich erfolgreich ergistriert!", "success")
+			return redirect(url_for("login"))
+		else:
+			flash("Alle Felder müssen ausgefüllt sein außer der Telefonnummer!", "danger")
+
+	return render_template("register.html", form=form, json_data=json_data)
+
+# ----------------------------------------------------------------------------------------- #
+
+@app.route("/login/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+	form = HTML_Forms.Form(request.form)
+	json_data = json_db.read()
+
+	if request.method == "POST":
+		email = str(form.login_email.data)
+		if email in json_data["page-users"]:
+			random_password = app_functions.generateRandomPassword()
+			hashed_password = app_functions.password_hash(random_password)
+			py_send_mail.send_mail(email, "Neues Passwort bei Software-Dieburg", "Ihr neues Passwort lautet:<br><br>{}<br><br>".format(random_password))
+			json_data["page-users"][email]["password"] = hashed_password[0]
+			json_data["page-users"][email]["password_salt"] = hashed_password[1]
+			json_db.write(json_data)
+			flash("Ihr Passwort wurde zurückgesetzt. Bitte überprüfen Sie Ihre Emails", "success")
+			return redirect(url_for("home"))
+		else:
+			flash("Diese Email ist nicht in unserem System!", "danger")
+			return redirect(url_for("home"))
+		
+	return render_template("forgot_password.html", form=form, json_data=json_data) 
+# ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------- #
 
 @app.route('/', methods=["GET", "POST"])
 def home():
@@ -35,9 +121,19 @@ def home():
 def quiz(id):
     json_data = json_db.read()
 
+    if "nickname" not in session:
+        flash("Sieht aus als wärst du nicht mehr eingeloggt.", "info")
+        return redirect(url_for("login"))
+
+    if "users" not in json_data:
+            json_data["users"] = {}
+    if session["nickname"] not in json_data["users"]:
+        json_data["users"][session["nickname"]] = {}
+
     if "tmp-group" not in json_data["users"][session["nickname"]]:
         tmp_dict = json_data["groups"][id].copy()
         json_data["users"][session["nickname"]]["tmp-group"] = py_quiz.makeQuiz(tmp_dict)
+        json_data["users"][session["nickname"]]["tmp-group"]["group-name"] = id
         json_data["users"][session["nickname"]]["tmp-group"]["question-index"] = 0
         json_data["users"][session["nickname"]]["tmp-group"]["ts-start"] = str(datetime.datetime.now())
         json_db.write(json_data)
@@ -92,6 +188,15 @@ def quiz(id):
 @app.route('/quiz_leaderboard/<string:id>', methods=["GET", "POST"])
 def quiz_leaderboard(id):
     json_data = json_db.read()
+
+    if "leaderboard" not in json_data["groups"][id]:
+        json_data["groups"][id]["leaderboard"] = {}
+    
+
+    leaderboad = py_quiz.makeRanking(json_data["groups"][id]["leaderboard"])
+    json_data["groups"][id]["leaderboad"] = leaderboad
+
+    json_db.write(json_data)
     return render_template("quiz_leaderboard.html", json_data=json_data, id=id)
 # ----------------------------------------------------------------------------------------- #
 
@@ -120,6 +225,10 @@ def quiz_create_new_lobby():
     form = HTML_Forms.Form(request.form)
     json_data = json_db.read()
 
+    if "nickname" not in session:
+        flash("Sieht aus als wärst du nicht mehr eingeloggt.", "info")
+        return redirect(url_for("login"))
+
     if request.method == "POST":
         title = form.quiz_title.data
         tmp_mode = form.quiz_mode.data
@@ -145,6 +254,10 @@ def quiz_show(id):
     form = HTML_Forms.Form(request.form)
     json_data = json_db.read()
 
+    if "nickname" not in session:
+        flash("Sieht aus als wärst du nicht mehr eingeloggt.", "info")
+        return redirect(url_for("login"))
+
     if session["nickname"] != json_data["groups"][id]["owner"]:
         flash("Sie haben keine Berechtigung auf diese Gruppe zuzugreifen!", "danger")
         return redirect(url_for("quiz_lobby"))
@@ -155,6 +268,10 @@ def quiz_show(id):
         answer_b = form.answer_b.data
         answer_c = form.answer_c.data
         answer_d = form.answer_d.data
+
+        if question == "" or right_answer == "" or answer_b == "" or answer_c == "" or answer_d == "":
+            flash("Bitte fülle alle Felder aus!", "danger")
+            return redirect(url_for("quiz_show", id=id))
 
         if "questions" not in json_data["groups"][id]:
             json_data["groups"][id]["questions"] = {}
@@ -173,6 +290,32 @@ def quiz_show(id):
             return redirect(url_for("quiz_show",id=id))
 
     return render_template("quiz_show.html", form=form, json_data=json_data, id=id)
+# ----------------------------------------------------------------------------------------- #
+
+@app.route('/del_group/<string:id>', methods=["GET", "POST"])
+def delete_goup(id):
+    json_data = json_db.read()
+    if session["nickname"] == json_data["groups"][id]["owner"]:
+        del json_data["groups"][id]
+        json_db.write(json_data)
+        flash("Du hast die Gruppe gelöscht!", "success")
+    else:
+        flash("Du hast keine Berechtigung das zu tun!", "danger")
+    return redirect(url_for("quiz_lobby"))
+# ----------------------------------------------------------------------------------------- #
+
+@app.route('/del_question/<string:id>/<string:question>/', methods=["GET", "POST"])
+def delete_question(id, question):
+    json_data = json_db.read()
+    if session["nickname"] == json_data["groups"][id]["owner"]:
+        question_list = list(json_data["groups"][id]["questions"])
+        del json_data["groups"][id]["questions"][str(question_list[int(question)])]
+        json_db.write(json_data)
+        flash("Du hast die Frage gelöscht!", "success")
+
+    else:
+        flash("Du hast keine Berechtigung das zu tun!", "danger")
+    return redirect(url_for("quiz_show", id=id))
 # ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #

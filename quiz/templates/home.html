@@ -4,16 +4,25 @@
 {% from "includes/_formhelpers.html" import render_field %}
 <center>
 	<h1>
-		Software Dieburg - Games
+		Software Dieburg - Speedquiz
 	</h1>
 	<hr>
 	
 	<p style="font-size: 24px;">
-		Julian und meine Wenigkeit konnten es nicht lassen und präsentieren,
-		euch gerne zur Freien Verfügung lustige Spielchen!
+		Die Regenln des Speed Quiz sind ganz einfach. VErsuche so schnell wie möglich alle Fragen richtig zu beantworten und 
+		sicher dir deinen Platz auf dem Leaderboard! <br>
+		Um an dem Quiz teilzunehmen, musst du dich einloggen bez. vorab registrieren!
+
 	</p>
+	<a class="btn btn-outline-info btn-lg" href="/register">Registrieren</a>
 	<br>
-	<a class="btn btn-outline-info btn-lg" href="/quiz_lobby">Quiz</a>
+	<br>
+	<br>
+	{% if "nickname" not in session %}
+		<a class="btn btn-outline-success btn-lg" href="/login">Login</a>
+	{% else %}
+		<a class="btn btn-outline-success btn-lg" href="/quiz_lobby">Quiz</a>
+	{% endif %}
 </center>
 
 {% endblock %}

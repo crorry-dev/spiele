@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-import random
+import random, datetime
 
 def makeQuiz(group_data):
     open_questions = {}
@@ -38,5 +38,36 @@ def makeQuiz(group_data):
     return {"open-questions": open_questions, "used-questions": used_questions}
 
 
-def makeRanking():
-    pass
+def makeRanking(leaderboard_data):
+    # pos: {nickname: "", right-answers: 1, questions: 2, time: 0:0:6.213, trys: 1}
+    tmp_leaderboad = leaderboard_data.copy()
+    leaderboad = []
+    for r in tmp_leaderboad:
+        leaderboad.append(tmp_leaderboad[r])
+    
+    for r in range(len(leaderboad)):
+        for rr in range(0, len(leaderboad) - r - 1):
+            if leaderboad[rr]["right-answers"] > leaderboad[rr + 1]["right-answers"]:
+                tmp = leaderboad[rr]
+                leaderboad[rr] = leaderboad[rr+1]
+                leaderboad[rr+1] = tmp
+            elif leaderboad[rr]["right-answers"] == leaderboad[rr + 1]["right-answers"]:
+                if leaderboad[rr]["trys"] < leaderboad[rr + 1]["trys"]:
+                    tmp = leaderboad[rr]
+                    leaderboad[rr] = leaderboad[rr+1]
+                    leaderboad[rr+1] = tmp
+                elif leaderboad[rr]["trys"] == leaderboad[rr + 1]["trys"]:
+                    if datetime.datetime.strptime(leaderboad[rr]["time"], "%H:%M:%S.%f") < datetime.datetime.strptime(leaderboad[rr + 1]["time"], "%H:%M:%S.%f"):
+                        tmp = leaderboad[rr]
+                        leaderboad[rr] = leaderboad[rr+1]
+                        leaderboad[rr+1] = tmp
+    
+    return_leaderboard = {}
+    index = 0
+    for r in range(len(leaderboad)-1,-1, -1):
+        return_leaderboard[str(index)] = leaderboad[r]
+        index += 1
+    
+    return return_leaderboard
+
+

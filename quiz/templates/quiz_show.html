@@ -7,8 +7,11 @@
     <hr>
     <h3>Neue Quizfrage erstellen</h3>
     <hr>
+    <br>
+    <a href="/quiz_lobby" class="btn btn-outline-info btn-lg" style="float: left;">Zurück</a>
+    <br>
+    <br>
     <form method="POST">
-        <p>Dein Nickname darf nur zusammengeschrieben sein!</p>
         <div class="form-group" >{{render_field(form.question, class="form-control")}}</div>
         <div class="form-group" >{{render_field(form.answer_a, class="form-control")}}</div>
         <div class="form-group" >{{render_field(form.answer_b, class="form-control")}}</div>
@@ -27,6 +30,7 @@
             <th>Weitere Antwort</th>
             <th>Weitere Antwort</th>
             <th>Weitere Antwort</th>
+            <th>Löschen</th>
         </tr>
         {% for question in json_data["groups"][id]["questions"] %}
         <tr>
@@ -35,9 +39,12 @@
             <td>{{ json_data["groups"][id]["questions"][question]["b"] }}</td>
             <td>{{ json_data["groups"][id]["questions"][question]["c"] }}</td>
             <td>{{ json_data["groups"][id]["questions"][question]["d"] }}</td>
+            <td><a href="/del_question/{{ id }}/{{ loop.index - 1 }}" class="btn btn-outline-danger btn-sm">DEL</a></td>
         </tr>
         {% endfor %}
     </table>
 
+    <hr><hr>
+    <a href="/del_group/{{ id }}" class="btn btn-outline-danger btn-lg">Gruppe Löschen</a>
 </center>
 {% endblock %}

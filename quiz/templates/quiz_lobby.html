@@ -7,35 +7,39 @@
     <hr>
     <p>Um eine eigene Quizrunde erstellen zu können, registriere dich bitte!</p>
     {% if "nickname" not in session %}
-        <form method="POST">
-            <p>Dein Nickname darf nur zusammengeschrieben sein!</p>
-            <div class="form-group" >{{render_field(form.nickname, class="form-control")}}</div>
-            <br>
-            <center><input type="submit" class="btn btn-outline-success btn-lg" value="Enter" /></center>
-        </form>
+        <p>Bitte melde dich wieder an!</p>
+        <a href="/login" class="btn btn-outline-success btn-lg">Login</a>
     {% else %}
         <a href="/quiz_create_new_lobby" class="btn btn-outline-success btn-lg">Neues Quiz erstellen</a>
     {% endif %}
 
+
+    
     <table class="table table-stripped">
         <tr>
             <th>Gruppen Name</th>
             <th>Anzahl Fragen</th>
             <th>Leaderboard</th>
-            <th>Owner</th>
             <th>Aktion</th>
+            <th></th>
         </tr>
         {% for group in json_data["groups"] %}
             <tr>
                 <td>{{ group }}</td>
                 <td>{{ json_data["groups"][group]["questions"]|length }}</td>
-                <td><a href="/quiz_leaderboard/{{ group }}">Leaderboard</a></td>
-                {% if session["nickname"] == json_data["groups"][group]["owner"] %}
-                <td><a href="/quiz_show/{{ group }}">Quiz bearbeiten</a></td>
+                <td><a href="/quiz_leaderboard/{{ group }}" class="btn btn-outline-info btn-lg" >Leaderboard</a></td>
+                {% if "tmp-group" in json_data["users"][session["nickname"]] %}
+                    {% if json_data["users"][session["nickname"]]["tmp-group"]["group-name"] == group %}
+                        <td><a href="/quiz/{{ group }}" class="btn btn-outline-success btn-lg" >Quiz Starten</a></td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
                 {% else %}
-                <td>{{ json_data["groups"][group]["owner"] }}</td>
+                    <td><a href="/quiz/{{ group }}" class="btn btn-outline-success btn-lg" >Quiz Starten</a></td>
                 {% endif %}
-                <td><a href="/quiz/{{ group }}">Quiz Starten</a></td>
+                {% if session["nickname"] == json_data["groups"][group]["owner"] %}
+                    <td><a href="/quiz_show/{{ group }}" class="btn btn-outline-info btn-lg" >Quiz bearbeiten</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
