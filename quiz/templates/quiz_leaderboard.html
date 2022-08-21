@@ -1,0 +1,29 @@
+{% extends 'includes/layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>Quiz {{ id }} Leaderboard</h1>
+    <hr>
+    <hr>
+
+    <table class="table table-stripped">
+    <tr>
+        <th>Platzierung</th>
+        <th>Zeit</th>
+        <th>Fragen Richtig</th>
+        <th>Name</th>
+        <th>Versuche</th>
+    </tr>
+    {% for rank in json_data["groups"][id]["leaderboard"] %}
+    <tr>
+        <td>{{ rank|int + 1 }}</td>
+        <td>{{ json_data["groups"][id]["leaderboard"][rank]["time"] }}</td>
+        <td>{{ json_data["groups"][id]["leaderboard"][rank]["right-answers"] }} von {{ json_data["groups"][id]["leaderboard"][rank]["questions"] }}</td>
+        <td>{{ json_data["groups"][id]["leaderboard"][rank]["nickname"] }}</td>
+        <td>{{ json_data["groups"][id]["leaderboard"][rank]["trys"] }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</center>
+{% endblock %}

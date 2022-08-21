@@ -5,7 +5,7 @@
 <center>
     <h1>Quiz Lobby</h1>
     <hr>
-
+    <p>Um eine eigene Quizrunde erstellen zu können, registriere dich bitte!</p>
     {% if "nickname" not in session %}
         <form method="POST">
             <p>Dein Nickname darf nur zusammengeschrieben sein!</p>
@@ -21,7 +21,7 @@
         <tr>
             <th>Gruppen Name</th>
             <th>Anzahl Fragen</th>
-            <th>Modus</th>
+            <th>Leaderboard</th>
             <th>Owner</th>
             <th>Aktion</th>
         </tr>
@@ -29,7 +29,7 @@
             <tr>
                 <td>{{ group }}</td>
                 <td>{{ json_data["groups"][group]["questions"]|length }}</td>
-                <td>{{ json_data["groups"][group]["mode"] }}</td>
+                <td><a href="/quiz_leaderboard/{{ group }}">Leaderboard</a></td>
                 {% if session["nickname"] == json_data["groups"][group]["owner"] %}
                 <td><a href="/quiz_show/{{ group }}">Quiz bearbeiten</a></td>
                 {% else %}

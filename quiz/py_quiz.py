@@ -36,3 +36,7 @@ def makeQuiz(group_data):
                 break
                 
     return {"open-questions": open_questions, "used-questions": used_questions}
+
+
+def makeRanking():
+    pass

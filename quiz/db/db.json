@@ -1,7 +1,8 @@
 {
     "lobbys": {},
     "users": {
-        "Tobi": {}
+        "Tobi": {},
+        "Test": {}
     },
     "groups": {
         "test": {
@@ -14,24 +15,23 @@
                     "c": "3",
                     "d": "4"
                 }
-            }
-        },
-        "Dieburg": {
-            "mode": "rw",
-            "owner": "Tobi",
-            "questions": {
-                "Wie viele Einwohner hat dieburg": {
-                    "a": "15 500",
-                    "b": "18 200",
-                    "c": "20 100",
-                    "d": "13 900"
+            },
+            "leaderboard": {
+                "0": {
+                    "nickname": "Tobi",
+                    "right-answers": 1,
+                    "questions": 1,
+                    "time": "0:00:02.184606"
                 },
-                "Wie viel Quadratmeter betr\u00e4gt die Fl\u00e4che von Dieburg?": {
-                    "a": "~23 q/km",
-                    "b": "~31 q/km",
-                    "c": "~19 q/km",
-                    "d": "~15 q/km"
+                "1": {
+                    "nickname": "Tobi",
+                    "right-answers": 0,
+                    "questions": 1,
+                    "time": "0:00:00.748176"
                 }
+            },
+            "user-trys": {
+                "Tobi": 2
             }
         },
         "Software-Dieburg": {
@@ -145,6 +145,37 @@
                     "b": "Post Identifcation Number",
                     "c": "Password Identification Number",
                     "d": "Password In Network"
+                }
+            }
+        },
+        "Test": {
+            "mode": "rw",
+            "owner": "Tobi",
+            "questions": {
+                "1": {
+                    "a": "1",
+                    "b": "2",
+                    "c": "3",
+                    "d": "4"
+                }
+            },
+            "user-trys": {
+                "Tobi": 2
+            },
+            "leaderboard": {
+                "0": {
+                    "nickname": "Tobi",
+                    "right-answers": 0,
+                    "questions": 1,
+                    "time": "0:00:01.102005",
+                    "trys": 1
+                },
+                "1": {
+                    "nickname": "Tobi",
+                    "right-answers": 0,
+                    "questions": 1,
+                    "time": "0:00:00.979563",
+                    "trys": 2
                 }
             }
         }

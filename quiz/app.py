@@ -39,6 +39,7 @@ def quiz(id):
         tmp_dict = json_data["groups"][id].copy()
         json_data["users"][session["nickname"]]["tmp-group"] = py_quiz.makeQuiz(tmp_dict)
         json_data["users"][session["nickname"]]["tmp-group"]["question-index"] = 0
+        json_data["users"][session["nickname"]]["tmp-group"]["ts-start"] = str(datetime.datetime.now())
         json_db.write(json_data)
         flash("Viel Spaß bei dem Quiz \'{}\'".format(id), "info")
         return redirect(url_for("quiz", id=id))
@@ -68,7 +69,18 @@ def quiz(id):
     if json_data["users"][session["nickname"]]["tmp-group"]["question-index"] == len( json_data["users"][session["nickname"]]["tmp-group"]["open-questions"]):
         count_right_answers = json_data["users"][session["nickname"]]["tmp-group"]["used-questions"]["right-answers"]
         count_questions = len(json_data["users"][session["nickname"]]["tmp-group"]["open-questions"])
-        flash("Das Quiz ist vorbei! Ich hoffe du hattest Spaß und warst erfolgreich! Du hast {} Fragen von {} richtig beantwortet!".format(count_right_answers, count_questions), "info")
+        
+        time_difference = app_functions.datetimeTimeDifference(app_functions.string2datetime(json_data["users"][session["nickname"]]["tmp-group"]["ts-start"]), datetime.datetime.now())
+        
+        if "user-trys" not in json_data["groups"][id]:
+            json_data["groups"][id]["user-trys"] = {}
+        if session["nickname"] not in json_data["groups"][id]["user-trys"]:
+            json_data["groups"][id]["user-trys"][session["nickname"]] = 0
+        json_data["groups"][id]["user-trys"][session["nickname"]] += 1
+        if "leaderboard" not in json_data["groups"][id]:
+            json_data["groups"][id]["leaderboard"] = {}
+        json_data["groups"][id]["leaderboard"][len(json_data["groups"][id]["leaderboard"])] = {"nickname": session["nickname"], "right-answers": count_right_answers, "questions": count_questions, "time": time_difference, "trys": json_data["groups"][id]["user-trys"][session["nickname"]]}
+        flash("Das Quiz ist vorbei! Ich hoffe du hattest Spaß und warst erfolgreich! Du hast {} Fragen von {} richtig beantwortet! In einer Zeit von {}".format(count_right_answers, count_questions, time_difference), "info")
         del json_data["users"][session["nickname"]]["tmp-group"]
         json_db.write(json_data)
         return redirect(url_for("quiz_lobby"))
@@ -77,6 +89,11 @@ def quiz(id):
     return render_template("quiz.html", json_data=json_data, id=id)
 # ----------------------------------------------------------------------------------------- #
 
+@app.route('/quiz_leaderboard/<string:id>', methods=["GET", "POST"])
+def quiz_leaderboard(id):
+    json_data = json_db.read()
+    return render_template("quiz_leaderboard.html", json_data=json_data, id=id)
+# ----------------------------------------------------------------------------------------- #
 
 @app.route('/quiz_lobby', methods=["GET", "POST"])
 def quiz_lobby():

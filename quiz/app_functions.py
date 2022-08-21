@@ -25,8 +25,10 @@ def generateRandomPassword(length=8):
 
 
 def string2datetime(dt):
-	return datetime.datetime.strptime(str(dt), "%Y-%m-%d %H:%M:%S")
+	return datetime.datetime.strptime(str(dt), "%Y-%m-%d %H:%M:%S.%f")
 
+def datetimeTimeDifference(dt1, dt2):
+	return str(dt2-dt1)
 
 
 def bubbleSort(array):
