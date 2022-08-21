@@ -1,8 +1,23 @@
 #-*- coding:utf-8 -*-
 from flask import Flask, request
 from uuid import getnode as get_mac
-import random, string, hashlib, os, datetime, operator
+import random, string, hashlib, os, datetime, operator, requests, json
 
+
+def getGeoIPData(ip=request.remote_addr):
+	url = 'http://ipwho.is/{}'.format(ip) #request.remote_addr 
+	r = requests.get(url)
+	j = json.loads(r.text)
+	data = {
+		"ip": j["ip"],
+		"continent": j["continent"],
+		"region": j["region"],
+		"postal": j["postal"],
+		"contry": j["contry"],
+		"position": str(j["longitude"] + ", " + j["latitude"]),
+		"connection": j["connection"]
+	}
+	return data
 
 def getClientInfo():
 	ip = request.remote_addr

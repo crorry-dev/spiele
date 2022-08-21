@@ -117,10 +117,19 @@ def forgot_password():
 
 @app.route('/', methods=["GET", "POST"])
 def home():
-	form = HTML_Forms.Form(request.form)
-	json_data = json_db.read()
+    form = HTML_Forms.Form(request.form)
+    json_data = json_db.read()
+    json_data_ip = json_db.read("ip")
+    tmp_data = app_functions.getGeoIPData(request.remote_addr)
 
-	return render_template("home.html", form=form, json_data=json_data)
+    json_data_ip[tmp_data["ip"]] = tmp_data
+    if "last-visit" not in json_data_ip[tmp_data["ip"]]:
+        json_data_ip[tmp_data["ip"]]["last-visit"] = {"new":str(datetime.datetime.now()) ,"old": "1999-01-01 00:00:00:000000"}
+    else:
+        json_data_ip[tmp_data["ip"]]["last-visit"]["old"] = json_data_ip[tmp_data["ip"]]["last-visit"]["new"]
+        json_data_ip[tmp_data["ip"]]["last-visit"]["new"] = str(datetime.datetime.now())
+    json_db.write(json_data_ip, "ip")
+    return render_template("home.html", form=form, json_data=json_data)
 # ----------------------------------------------------------------------------------------- #
 
 @app.route('/quiz/<string:id>', methods=["GET", "POST"])
