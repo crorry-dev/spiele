@@ -39,7 +39,7 @@ def login():
         if json_data["page-users"][email]["password"] == app_functions.password_hash(password, salt)[0]:
             flash("Sie haben sich erfolgreich eingeloggt", "success")
             session["email"] = email
-            session["nickname"] = email
+            session["nickname"] = json_data["page-users"][email]["nickname"]
             session["name"] = json_data["page-users"][email]["firstname"] + " " + json_data["page-users"][email]["name"]
             return redirect(url_for("quiz_lobby"))
         else:
@@ -56,22 +56,22 @@ def register():
 	json_data = json_db.read()
 
 	if request.method == "POST": 
-		firstname = str(form.register_firstname.data)
-		name = str(form.register_name.data)
+		#firstname = str(form.register_firstname.data)
+		#name = str(form.register_name.data)
 		email = str(form.register_email.data)
 		password = str(form.register_password.data)
 		confirm_password = str(form.register_confirm_password.data)
-		telephone = str(form.register_telephone.data)
+		nickname = str(form.register_nickname.data)
 
 		hashed_passwod = app_functions.password_hash(password)
 
-		if firstname != "" and name != "" and email != "" and password != "" and confirm_password != "":
+		if nickname != "" and email != "" and password != "" and confirm_password != "":
 			if "page-users" not in json_data:
 				json_data["page-users"] = {}
 			if email in json_data["page-users"]:
 				flash("Diese Emailadressse ist bereits mit einem Account verknüpft! Wählen Sie Passwort vergessen auf der Login Seite!", "danger")
 				return redirect(url_for("register"))
-			json_data["page-users"][email] = {"firstname": firstname, "name": name, "telephone": telephone, "password": hashed_passwod[0], "password_salt": hashed_passwod[1]}
+			json_data["page-users"][email] = {"nickname": nickname, "password": hashed_passwod[0], "password_salt": hashed_passwod[1]}
 			json_db.write(json_data)
 			py_send_mail.send_mail(email, "Registrierung bei Software-Dieburg", "Vielen Dank für Ihre Registrierung bei Software-Dieburg.de!")
 			flash("Sie haben Sich erfolgreich ergistriert!", "success")
