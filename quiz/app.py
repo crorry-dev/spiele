@@ -329,6 +329,17 @@ def delete_question(id, question):
         flash("Du hast keine Berechtigung das zu tun!", "danger")
     return redirect(url_for("quiz_show", id=id))
 # ----------------------------------------------------------------------------------------- #
+
+@app.route('/admin', methods=["GET", "POST"])
+def admin():
+    json_data = json_db.read()
+    json_data_ip = json_db.read("ip")
+    
+    if "admin" not in json_data["users"][session["nickname"]]:
+        return redirect(url_for("quiz_lobby"))
+
+    return render_template("admin.html", json_data=json_data, json_data_ip=json_data_ip)
+# ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #
 # ----------------------------------------------------------------------------------------- #

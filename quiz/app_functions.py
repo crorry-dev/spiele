@@ -4,19 +4,33 @@ from uuid import getnode as get_mac
 import random, string, hashlib, os, datetime, operator, requests, json
 
 
-def getGeoIPData(ip=request.remote_addr):
-	url = 'http://ipwho.is/{}'.format(ip) #request.remote_addr 
-	r = requests.get(url)
-	j = json.loads(r.text)
-	data = {
-		"ip": j["ip"],
-		"continent": j["continent"],
-		"region": j["region"],
-		"postal": j["postal"],
-		"contry": j["contry"],
-		"position": str(j["longitude"] + ", " + j["latitude"]),
-		"connection": j["connection"]
-	}
+def getGeoIPData(ip="8.8.4.4"):
+	try:
+		url = 'http://ipwho.is/{}'.format(ip) #request.remote_addr 
+		r = requests.get(url)
+		j = json.loads(r.text)
+		data = {
+			"ip": j["ip"],
+			"continent": j["continent"],
+			"region": j["region"],
+			"city": j["city"],
+			"postal": j["postal"],
+			"country": j["country"],
+			"position": str(j["latitude"]) + ", " + str(j["longitude"]),
+			"connection": j["connection"]
+		}
+	except:
+		data = {
+			"ip": None,
+			"continent": None,
+			"region": None,
+			"city": None,
+			"postal": None,
+			"country": None,
+			"position": None,
+			"connection": None
+		}
+
 	return data
 
 def getClientInfo():

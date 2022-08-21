@@ -1,0 +1,36 @@
+{% extends 'includes/layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<center>
+    <h1>Admin</h1>
+    <hr>
+
+    <table class="table table-stripped">
+        <tr>
+            <th>IP</th>
+            <th>Continent</th>
+            <th>Region</th>
+            <th>City</th>
+            <th>Postal</th>
+            <th>Country</th>
+            <th>position</th>
+            <th>Connection</th>
+        </tr>
+        {% for ip in json_data_ip %}
+        <tr>
+            <td>{{ ip }}</td>
+            <td>{{ json_data_ip[ip]["continent"] }}</td>
+            <td>{{ json_data_ip[ip]["region"] }}</td>
+            <td>{{ json_data_ip[ip]["city"] }}</td>
+            <td>{{ json_data_ip[ip]["postal"] }}</td>
+            <td>{{ json_data_ip[ip]["country"] }}</td>
+            <td>{{ json_data_ip[ip]["position"] }}</td>
+            <td>{{ json_data_ip[ip]["connection"] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</center>
+
+{% endblock %}

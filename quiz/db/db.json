@@ -1,7 +1,9 @@
 {
     "lobbys": {},
     "users": {
-        "Crorry": {}
+        "Crorry": {
+            "admin": true
+        }
     },
     "groups": {
         "Dieburg": {
