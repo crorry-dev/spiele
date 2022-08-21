@@ -22,9 +22,9 @@ class Form(Form):
     login_password = PasswordField("Passwort", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
 
     #register
-    register_firstname = StringField("Vorname", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
-    register_name = StringField("Nachname", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
-    register_telephone = StringField("Telefonnummer", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
+    #register_firstname = StringField("Vorname", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
+    #register_name = StringField("Nachname", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
+    register_nickname = StringField("Nickname", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
     register_email = StringField("Email Adresse", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
     register_password = PasswordField("Passwort", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})
     register_confirm_password = PasswordField("Passwort bestätigen", [validators.Length(min=1, max=9999)], render_kw={"style":"margin:0 auto; width: 75%; font-size: 20px;"})

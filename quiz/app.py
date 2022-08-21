@@ -40,7 +40,7 @@ def login():
             flash("Sie haben sich erfolgreich eingeloggt", "success")
             session["email"] = email
             session["nickname"] = json_data["page-users"][email]["nickname"]
-            session["name"] = json_data["page-users"][email]["firstname"] + " " + json_data["page-users"][email]["name"]
+            #session["name"] = json_data["page-users"][email]["firstname"] + " " + json_data["page-users"][email]["name"]
             return redirect(url_for("quiz_lobby"))
         else:
             flash("Die eingegebenen Nutzerdaten stimmen nicht!", "danger")
@@ -52,34 +52,40 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-	form = HTML_Forms.Form(request.form)
-	json_data = json_db.read()
+    form = HTML_Forms.Form(request.form)
+    json_data = json_db.read()
 
-	if request.method == "POST": 
-		#firstname = str(form.register_firstname.data)
-		#name = str(form.register_name.data)
-		email = str(form.register_email.data)
-		password = str(form.register_password.data)
-		confirm_password = str(form.register_confirm_password.data)
-		nickname = str(form.register_nickname.data)
+    if request.method == "POST": 
+        #firstname = str(form.register_firstname.data)
+        #name = str(form.register_name.data)
+        email = str(form.register_email.data)
+        password = str(form.register_password.data)
+        confirm_password = str(form.register_confirm_password.data)
+        nickname = str(form.register_nickname.data)
 
-		hashed_passwod = app_functions.password_hash(password)
+        hashed_passwod = app_functions.password_hash(password)
 
-		if nickname != "" and email != "" and password != "" and confirm_password != "":
-			if "page-users" not in json_data:
-				json_data["page-users"] = {}
-			if email in json_data["page-users"]:
-				flash("Diese Emailadressse ist bereits mit einem Account verknüpft! Wählen Sie Passwort vergessen auf der Login Seite!", "danger")
-				return redirect(url_for("register"))
-			json_data["page-users"][email] = {"nickname": nickname, "password": hashed_passwod[0], "password_salt": hashed_passwod[1]}
-			json_db.write(json_data)
-			py_send_mail.send_mail(email, "Registrierung bei Software-Dieburg", "Vielen Dank für Ihre Registrierung bei Software-Dieburg.de!")
-			flash("Sie haben Sich erfolgreich ergistriert!", "success")
-			return redirect(url_for("login"))
-		else:
-			flash("Alle Felder müssen ausgefüllt sein außer der Telefonnummer!", "danger")
+        if nickname != "" and email != "" and password != "" and confirm_password != "":
+            if "page-users" not in json_data:
+                json_data["page-users"] = {}
+            if email in json_data["page-users"]:
+                flash("Diese Emailadressse ist bereits mit einem Account verknüpft! Wählen Sie Passwort vergessen auf der Login Seite!", "danger")
+                return redirect(url_for("register"))
+            json_data["page-users"][email] = {}
+            for e in json_data["page-users"]:
+                if nickname in json_data["page-users"][e]:
+                    flash("Dieser Nickname ist bereits vergeben, bitte wähle einen anderen!", "danger")
+                    return redirect(url_for("register"))
 
-	return render_template("register.html", form=form, json_data=json_data)
+            json_data["page-users"][email] = {"nickname": nickname, "password": hashed_passwod[0], "password_salt": hashed_passwod[1]}
+            json_db.write(json_data)
+            py_send_mail.send_mail(email, "Registrierung bei Software-Dieburg", "Vielen Dank für Ihre Registrierung bei Software-Dieburg.de!")
+            flash("Sie haben Sich erfolgreich ergistriert!", "success")
+            return redirect(url_for("login"))
+        else:
+            flash("Alle Felder müssen ausgefüllt sein außer der Telefonnummer!", "danger")
+
+    return render_template("register.html", form=form, json_data=json_data)
 
 # ----------------------------------------------------------------------------------------- #
 

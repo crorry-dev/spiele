@@ -123,6 +123,10 @@
         "Quiz ?": {
             "mode": "rw",
             "owner": "t.cronauer@me.com"
+        },
+        "sdfsdf": {
+            "mode": "rw",
+            "owner": "Crorry"
         }
     },
     "page-users": {
@@ -132,6 +136,11 @@
             "telephone": "017680760104",
             "password": "\\x0ftA\\x96pN$\\xd1\\xde\\xf5g\\x0e\\x99+\\x01\\xa6\\x9d\\xb0M\\x19\\xed*\\x93w9\\x92(\\x9a\\xe9\\xe5(\\xa4",
             "password_salt": "d\\x83\\x96a{\\x07\\x0f~?%q\\x1c\\x18\\x917\\xe5U\\xa9\\xe3\\xcc\\xf6"
+        },
+        "tobias.cronauer.tec@gmail.com": {
+            "nickname": "Crorry",
+            "password": "RU\\xc9\\xd0\\x07X\\xeb\\xeb\\x16b{i\"\\x07\\x118Lpn\\xe8\\xe5B\\x90\\x0fNG\\xd2\\xd5\\x08k\\xbe\\xb5",
+            "password_salt": "W\\x1b \\x8c\\xc43\\xde\\xbe\\x12\\xc7\\xef\\xed\\xb2\\xf8\\x03\\x86\\x16!\\xac\\x862"
         }
     }
 }
