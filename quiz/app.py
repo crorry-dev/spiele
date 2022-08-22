@@ -30,7 +30,7 @@ def login():
     form = HTML_Forms.Form(request.form)
     json_data = json_db.read()
     if request.method == "POST":
-        email = str(form.login_email.data)
+        email = str(form.login_email.data).lower().split()[0]
         password = str(form.login_password.data)
         if email not in json_data["page-users"]:
             flash("Diese Email ist uns nicht bekannt!", "danger")
@@ -58,7 +58,7 @@ def register():
     if request.method == "POST": 
         #firstname = str(form.register_firstname.data)
         #name = str(form.register_name.data)
-        email = str(form.register_email.data)
+        email = str(form.register_email.data).lower().split()[0]
         password = str(form.register_password.data)
         confirm_password = str(form.register_confirm_password.data)
         nickname = str(form.register_nickname.data)
@@ -331,6 +331,18 @@ def delete_question(id, question):
     else:
         flash("Du hast keine Berechtigung das zu tun!", "danger")
     return redirect(url_for("quiz_show", id=id))
+# ----------------------------------------------------------------------------------------- #
+
+@app.route('/del_user/<string:user>', methods=["GET", "POST"])
+def delete_question(user):
+    json_data = json_db.read()
+    if json_data["users"][session["nickname"]]["admin"]:
+        del json_data["users"][user]
+        json_db.write(json_data)
+        flash("Du hast den User gelöscht!", "success")
+    else:
+        flash("Du hast keine Berechtigung das zu tun!", "danger")
+    return redirect(url_for("admin"))
 # ----------------------------------------------------------------------------------------- #
 
 @app.route('/admin', methods=["GET", "POST"])

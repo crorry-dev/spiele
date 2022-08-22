@@ -8,13 +8,13 @@
     <h3>Users</h3>
     <table class="table table-stripped">
         <tr>
-            <th>Nickname</th>
             <th>Email</th>
+            <th>Nickname</th>
         </tr>
         {% for user in json_data["page-users"] %}
         <tr>
             <td>{{ user }}</td>
-            <td>{{ json_data["page-users"][user]["email"] }}</td>
+            <td>{{ json_data["page-users"][user]["nickname"] }}</td>
         </tr>
         {% endfor %}
     </table>
