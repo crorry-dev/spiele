@@ -19,7 +19,17 @@
             <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
                 <div id="corner-left" style="font-size: 14px; position:absolute; top:5px; left: 5px;;">{{ json_busfahren["final-cards"][loop.index - 1][1] }}</div>
                 <div id="coner-bottom-right" style="font-size: 14px; position:absolute; bottom:5px; right:5px;">{{ json_busfahren["final-cards"][loop.index - 1][1] }}</div>
-                <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">{{ json_busfahren["final-cards"][loop.index - 1][0] }}</div>
+                {% if json_busfahren["final-cards"][loop.index - 1][0] == 11 %}
+                    <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;"> B </div>
+                {% elif json_busfahren["final-cards"][loop.index - 1][0] == 12 %}
+                    <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;"> D </div>
+                {% elif json_busfahren["final-cards"][loop.index - 1][0] == 13 %}
+                    <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;"> K </div>
+                {% elif json_busfahren["final-cards"][loop.index - 1][0] == 14 %}
+                    <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;"> A </div>
+                {% else %}
+                    <div id="card-value" style="font-size: 28px; position:absolute; top: 50px; left: 35px;">{{ json_busfahren["final-cards"][loop.index - 1][0] }}</div>
+                {% endif %}
             </div>
             {% else %}
             <div id="triangle_card" style="width:100px; height:150px; border-style:solid; border-radius:10px;position:relative;display:inline-block;margin-left: 50px;">
