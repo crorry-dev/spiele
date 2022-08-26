@@ -137,7 +137,17 @@
         {% for t in json_busfahren["timeline"] %}
         <tr>
             <td>{{ t[0] }}</td>
-            <td>{{ t[1] }}</td>
+            {% if t[1] == 11 %}
+                <td> B </td>
+            {% elif t[1] == 12 %}
+            <td> D </td>
+            {% elif t[1] == 12 %}
+            <td> K </td>
+            {% elif t[1] == 14 %}
+            <td> A </td>    
+            {% else %}
+                <td>{{ t[1] }}</td>
+            {% endif %}
             <td>{{ t[2] }}</td>
         </tr>
         {% endfor %}
